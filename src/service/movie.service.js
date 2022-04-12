@@ -13,11 +13,20 @@ class MovieService {
       return result[0];
     }
     // 通过category2查询(必带个数,页码)
-    async findCategory2(type) {
-      // const offset = toString((page - 1) *num)
-      // const limit = num
-      const statement = `SELECT * FROM movie WHERE category2 = ?;`;
-      const result = await connection.execute(statement, [type]);
+    async findCategory2(type,num,page) {
+      // const result = null
+      // if(num != undefined && page != undefined) {
+      //   const offset = toString((page - 1) *num)
+      //   const limit = num
+      //   const statement = `SELECT * FROM movie LIMIT ? OFFSET ?;`
+      //   result = await connection.execute(statement,[limit,offset])
+      // } else {
+      //   const statement = `SELECT * FROM movie WHERE category2 = ?;`;
+      //   result = await connection.execute(statement, [type]);
+      // }
+      const statement = `SELECT * FROM movie WHERE category2 = ?;`
+      const result = await connection.execute(statement,[type])
+      
       return result[0];
     }
     // 搜索关键字

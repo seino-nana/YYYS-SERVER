@@ -12,8 +12,8 @@ class MovieController {
         ctx.body = result
     }
     async getCategory2(ctx,next) {
-        const { type } = ctx.query
-        const result = await movieService.findCategory2(type)
+        const { type,num,page } = ctx.query
+        const result = await movieService.findCategory2(type,num,page)
         ctx.body = result
     }
     async getSearch(ctx,next) {
