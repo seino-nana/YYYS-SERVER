@@ -16,6 +16,11 @@ class MovieController {
         const result = await movieService.findCategory2(type)
         ctx.body = result
     }
+    async getSearch(ctx,next) {
+        const { query } = ctx.query
+        const result = await movieService.findSearch(query)
+        ctx.body = result
+    }
 }
 
 module.exports = new MovieController()
