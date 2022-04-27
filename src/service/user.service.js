@@ -16,5 +16,11 @@ class UserService {
         const result = await connection.execute(statement,[username])
         return result[0]
     }
+    // 获取用户信息
+    async getUserDetail(id) {
+        const statement = `SELECT * FROM user WHERE id = ?;`
+        const result = await connection.execute(statement,[id])
+        return result[0]
+    }
 }
 module.exports = new UserService()

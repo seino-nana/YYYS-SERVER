@@ -2,7 +2,7 @@ const connection = require("../app/database");
 class MovieService {
     // 查询全部
     async findAll() {
-      const statement = `SELECT * FROM movie LIMIT 100;`;
+      const statement = `SELECT * FROM movie;`;
       const result = await connection.execute(statement, []);
       return result[0];
     }
@@ -10,6 +10,12 @@ class MovieService {
     async findId(id) {
       const statement = `SELECT * FROM movie WHERE id = ?;`;
       const result = await connection.execute(statement, [id]);
+      return result[0];
+    }
+    // 根据id删除
+    async deleteMovie(id) {
+      const statement = `DELETE FROM movie WHERE id = ?;`;
+      const result = await connection.execute(statement,[id])
       return result[0];
     }
     // 通过category2查询(浅)
@@ -28,12 +34,29 @@ class MovieService {
       
       return result[0]
     }
-    // 搜索关键字
-    async findSearch(query) {
+    // 关键字:电影名
+    async findSearchName(query) {
       const _query = '%' + query + '%'
-      const statement = `SELECT * FROM movie where name LIKE ? OR actors LIKE ? OR director LIKE ?;`
-      const result  = await connection.execute(statement,[_query,_query,_query])
+      const statement = `SELECT * FROM movie where name LIKE ?;`
+      const result  = await connection.execute(statement,[_query])
       return result[0]
+    }
+
+    // 关键字：演员
+    async findSearchActors(query) {
+      const _query = '%' + query + '%'
+      const statement = `SELECT * FROM movie WHERE actors LIKE ?;`
+      const result = await connection.execute(statement,[_query])
+      return result[0]
+    }
+
+    // 关键字：导演
+    async findSearchDirector(query) {
+      const _query = '%' + query + '%'
+      const statement = `SELECT * FROM movie WHERE director LIKE ?;`
+      const result = await connection.execute(statement,[_query])
+      return result[0]
+      
     }
 }
 module.exports = new MovieService()

@@ -10,6 +10,25 @@ class UserController {
         )
         ctx.body = result
     }
+    
+    // 获取用户详情
+    async getUserDetail(ctx,next) {
+      const { id } = ctx.user
+      const result = await UserService.getUserDetail(id)
+      ctx.body = result
+    }
+
+    // 获取用户信息
+    async getUserSubcount(ctx,next) {
+      const { id } = ctx.user
+      ctx.body = id
+    }
+
+    // 更改用户信息
+    async update(ctx,next) {
+      const { id } = ctx.user
+      ctx.body = "更改" + id + "的用户信息"
+    }
 }
 
 module.exports = new UserController()
