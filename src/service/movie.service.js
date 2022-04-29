@@ -44,17 +44,15 @@ class MovieService {
 
     // 关键字：演员
     async findSearchActors(query) {
-      const _query = '%' + query + '%'
       const statement = `SELECT * FROM movie WHERE actors LIKE ?;`
-      const result = await connection.execute(statement,[_query])
+      const result = await connection.execute(statement,[query])
       return result[0]
     }
 
     // 关键字：导演
     async findSearchDirector(query) {
-      const _query = '%' + query + '%'
       const statement = `SELECT * FROM movie WHERE director LIKE ?;`
-      const result = await connection.execute(statement,[_query])
+      const result = await connection.execute(statement,[query])
       return result[0]
       
     }

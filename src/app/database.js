@@ -3,11 +3,11 @@ const mysql = require("mysql2");
 const config = require("./config");
 
 const connections = mysql.createPool({
-  host: config.MYSQL_HOST,
-  port: config.MYSQL_PORT,
-  database: config.MYSQL_DATABASE,
-  user: config.MYSQL_USER,
-  password: config.MYSQL_PASSWORD
+  host: 'localhost',
+  port: 3306,
+  database: 'movie3154',
+  user: 'root',
+  password: 'root'
 })
 
 connections.getConnection((err, conn) => {
