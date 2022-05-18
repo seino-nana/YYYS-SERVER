@@ -1,13 +1,11 @@
-const fs = require("fs");
 const movieService = require('../service/movie.service')
-const fileService = require('../service/file.service')
-const { BANNERS_PATH } = require('../constants/file-path')
 
 class MovieController {
-    async getMovies(ctx,next) {
-        const result = await movieService.findAll()
-        ctx.body = result
-    }
+    async getCount(ctx,next) {
+        // const result1 = await movieService.findAll(num,page)
+        const result2 = await movieService.finAllCount() 
+        ctx.body = result2
+    } 
     async getDetail(ctx,next) {
         const { id } = ctx.query
         // const result = await movieService.getDetail(movieId)
@@ -19,9 +17,9 @@ class MovieController {
         const result = await movieService.deleteMovie(movieId)
         ctx.body = '删除成功' + result
     }
-    async getCategory2(ctx,next) {
+    async getCategory2(ctx,next) { 
         const { type } = ctx.query
-        const result = await movieService.findCategory2(type)
+        const result = await movieService.findCategory2(type) 
         ctx.body = result
     }
     async getCategory2deep(ctx,next) {
@@ -32,25 +30,31 @@ class MovieController {
 
     // 关键字查找电影名
     async getSearchName(ctx,next) {
-        const { query } = ctx.query
-        const result = await movieService.findSearchName(query)
+        const { query,num,page } = ctx.query
+        const result = await movieService.findSearchName(query,num,page)
         ctx.body = result
     }
     
     // 关键词查找演员
     async getSearchActors(ctx,next) {
-        const { query } = ctx.query
-        const result = await movieService.findSearchActors(query)
+        const { query,num,page } = ctx.query
+        const result = await movieService.findSearchActors(query,num,page)
         ctx.body = result
     }
 
     // 关键词查找导演
     async getSearchDirector(ctx,next) {
-        const { query } = ctx.query
-        const result = await movieService.findSearchDirector(query)
+        const { query,num,page } = ctx.query
+        const result = await movieService.findSearchDirector(query,num,page)
         ctx.body = result
     }
     
+    // 按条件分类查询
+    async getCategoryMovies(ctx,next) {
+        const { category,area,year,num,page } = ctx.query
+        const result = await movieService.findCategoryMovies(category,area,year,num,page)
+        ctx.body = result
+    }
 }
 
 module.exports = new MovieController()

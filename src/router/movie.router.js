@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 
 const { 
-        getMovies,
+        getCount,
         getDetail,
         remove,
         getCategory2,
@@ -9,11 +9,12 @@ const {
         getSearchName,
         getSearchActors,
         getSearchDirector,
+        getCategoryMovies,
       } = require('../controller/movie.controller')
 const dataRouter = new Router({prefix: '/movies'})
 
-// 获取所有信息
-dataRouter.get('/', getMovies)
+// 获取所有信息（个数）
+dataRouter.get('/', getCount) 
 
 // 查询id的所有信息
 dataRouter.get('/detail',getDetail)
@@ -34,6 +35,8 @@ dataRouter.get('/search/actors',getSearchActors)
 // 关键词查询导演
 dataRouter.get('/search/director',getSearchDirector)
 
-
+// 按条件分类查询
+dataRouter.get('/search/category',getCategoryMovies)
 module.exports = dataRouter
+
 

@@ -7,6 +7,6 @@ const { saveBannersInfo } = require('../controller/file.controller')
 
 const fileRouter = new Router({ prefix: '/upload' })
 
-fileRouter.post('/banners', bannersHandler,saveBannersInfo)
+fileRouter.post('/banners',bannersHandler,saveBannersInfo)
 
-module.exports = fileRouter
+module.exports = fileRouter 

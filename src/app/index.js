@@ -5,9 +5,16 @@ const errorHandler = require('./error.handle')
 
 const useRoutes = require('../router/index')
 
+const koaStatic = require('koa-static')
+const path = require('path')
+
+
 const app = new koa()
 // 返回解析
 app.use(bodyParser());
+
+// 图片静态储存
+app.use(koaStatic(path.join(__dirname,'../../upload/banners')))
 
 // 解决跨域
 app.use(async (ctx, next) => {

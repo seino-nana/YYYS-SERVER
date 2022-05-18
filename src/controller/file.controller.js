@@ -1,15 +1,13 @@
 const fileService = require('../service/file.service')
-const { APP_HOST, APP_PORT } = require("../app/config"); 
 
 class FileController {
     async saveBannersInfo(ctx,text) {
-        const { filename,mimetype,size } = ctx.req.file
-        const { title } = ctx.query
+        const { filename,originalname } = ctx.req.file
         
         // 将信息保存在banner中
-        await fileService.createBanner(filename,mimetype,size,title)
+        await fileService.createBanner(filename,originalname)
 
-        ctx.body = '保存' + title
+        ctx.body = '保存'
     }
 }
 
