@@ -3,6 +3,7 @@ const Router = require('koa-router')
 const { 
         getCount,
         getDetail,
+        update,
         remove,
         getCategory2,
         getCategory2deep,
@@ -18,6 +19,10 @@ dataRouter.get('/', getCount)
 
 // 查询id的所有信息
 dataRouter.get('/detail',getDetail)
+
+// 编辑电影
+dataRouter.post('/update',update)
+
 // 删除id的所有信息
 dataRouter.delete('/:movieId',remove)
 
@@ -32,11 +37,12 @@ dataRouter.get('/category2/deep',getCategory2deep)
 dataRouter.get('/search/name',getSearchName)
 // 关键词查询演员
 dataRouter.get('/search/actors',getSearchActors)
-// 关键词查询导演
+// 关键词查询导演 
 dataRouter.get('/search/director',getSearchDirector)
 
 // 按条件分类查询
 dataRouter.get('/search/category',getCategoryMovies)
+
 module.exports = dataRouter
 
 

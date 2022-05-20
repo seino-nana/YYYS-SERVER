@@ -4,13 +4,23 @@ class MovieController {
     async getCount(ctx,next) {
         // const result1 = await movieService.findAll(num,page)
         const result2 = await movieService.finAllCount() 
-        ctx.body = result2
+        ctx.body = result2[0]
     } 
     async getDetail(ctx,next) {
         const { id } = ctx.query
         // const result = await movieService.getDetail(movieId)
         const result = await movieService.findId(id)
         ctx.body = result
+    }
+    async update(ctx,next) {
+      const movie = ctx.request.body
+      const result = await movieService.updateMovie(movie)
+      if(result) {
+        ctx.body = '添加成功'
+      } else {
+        ctx.body = '编辑成功'
+      }
+      
     }
     async remove(ctx,next) {
         const { movieId } = ctx.params
@@ -36,7 +46,7 @@ class MovieController {
     }
     
     // 关键词查找演员
-    async getSearchActors(ctx,next) {
+    async getSearchActors(ctx,next) { 
         const { query,num,page } = ctx.query
         const result = await movieService.findSearchActors(query,num,page)
         ctx.body = result
