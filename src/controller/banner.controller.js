@@ -3,7 +3,8 @@ const bannerService = require('../service/banner.service')
 class BannerController {
     // 获取轮播图
     async getBanners(ctx,next) {
-        const result = await bannerService.findBanners()
+        const { category3,num,page } = ctx.query
+        const result = await bannerService.findBanners(category3,num,page)
         ctx.body = result
     }
 
@@ -16,10 +17,9 @@ class BannerController {
 
     // 编辑banner某一项
     async update(ctx,next) {
-      const { bannerId } = ctx.params
-      const { title,movieID } = ctx.query
-      await bannerService.updateBanners(title,movieID,bannerId)
-      ctx.body = '修改' + bannerId + '成功'
+      const { title,movieID,category3,id } = ctx.request.body
+      await bannerService.updateBanners(title,movieID,category3,id)
+      ctx.body = '编辑成功'
     }
 }
 

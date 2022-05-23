@@ -15,7 +15,7 @@ const {
 const dataRouter = new Router({prefix: '/movies'})
 
 // 获取所有信息（个数）
-dataRouter.get('/', getCount) 
+// dataRouter.get('/', getCount) 
 
 // 查询id的所有信息
 dataRouter.get('/detail',getDetail)

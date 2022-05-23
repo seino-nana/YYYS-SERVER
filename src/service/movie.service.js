@@ -1,18 +1,34 @@
 const connection = require("../app/database");
 class MovieService {
-  // 查询全部(加入num,page)
-  // async findAll(num, page) {
-  //   const offset = "" + ((page - 1) * num)
-  //   const limit = num
-  //   const statement = `SELECT * FROM movie LIMIT ? OFFSET ?;`;
-  //   const result = await connection.execute(statement, [limit, offset]);
-  //   return result[0];
-  // }
   // 查询个数
-  async finAllCount() {
-    const statement = `SELECT COUNT(1) from movie;`
-    const result = await connection.execute(statement, []);
-    console.log(result[0]);
+  // async finAllCount() {
+  //   const statement = `SELECT count(1) as count 
+  //   from movie 
+  //   where category2 = 3 limit 0,10;`
+  //   const result = await connection.execute(statement, []);
+  //   console.log(result[0]);
+  //   return result[0] 
+  // }
+  // 按条件分类查询
+  async findCategoryMovies(category, area, year, num, page) {
+    const _category = '%' + category + '%'
+    const _area = '%' + area + '%'
+    const _year = '%' + year + '%'
+    const offset = "" + ((page - 1) * num)
+    const limit = num
+    const statement = `
+      select *,(SELECT count(1) from movie 
+        WHERE category3 LIKE ? 
+        AND area LIKE ? 
+        AND year LIKE ?
+      ) as count FROM movie WHERE 
+        category3 LIKE ? 
+        AND area LIKE ? 
+        AND year LIKE ? 
+        ORDER BY update_time desc 
+        LIMIT ? OFFSET ?;
+      `
+    const result = await connection.execute(statement, [_category, _area, _year,_category, _area, _year, limit, offset])
     return result[0]
   }
   // 通过movieId查询
@@ -159,18 +175,5 @@ class MovieService {
     const result = await connection.execute(statement, [query, limit, offset])
     return result[0]
   }
-
-  // 按条件分类查询
-  async findCategoryMovies(category, area, year, num, page) {
-    const _category = '%' + category + '%'
-    const _area = '%' + area + '%'
-    const _year = '%' + year + '%'
-    const offset = "" + ((page - 1) * num)
-    const limit = num
-    const statement = `SELECT * FROM movie WHERE category3 LIKE ? AND area LIKE ? AND year LIKE ? ORDER BY update_time desc LIMIT ? OFFSET ?;`
-    const result = await connection.execute(statement, [_category, _area, _year, limit, offset])
-    return result[0]
-  }
-
 }
 module.exports = new MovieService() 

@@ -1,18 +1,24 @@
 const movieService = require('../service/movie.service')
 
 class MovieController {
-    async getCount(ctx,next) {
-        // const result1 = await movieService.findAll(num,page)
-        const result2 = await movieService.finAllCount() 
-        ctx.body = result2[0]
-    } 
+    // async getCount(ctx,next) {
+    //     // const result1 = await movieService.findAll(num,page)
+    //     const result2 = await movieService.finAllCount() 
+    //     ctx.body = result2[0]
+    // } 
+    // 按条件分类查询
+    async getCategoryMovies(ctx,next) {
+        const { category,area,year,num,page } = ctx.query
+        const result = await movieService.findCategoryMovies(category,area,year,num,page)
+        ctx.body = result
+    }
     async getDetail(ctx,next) {
         const { id } = ctx.query
         // const result = await movieService.getDetail(movieId)
         const result = await movieService.findId(id)
         ctx.body = result
     }
-    async update(ctx,next) {
+    async update(ctx,next) { 
       const movie = ctx.request.body
       const result = await movieService.updateMovie(movie)
       if(result) {
@@ -56,13 +62,6 @@ class MovieController {
     async getSearchDirector(ctx,next) {
         const { query,num,page } = ctx.query
         const result = await movieService.findSearchDirector(query,num,page)
-        ctx.body = result
-    }
-    
-    // 按条件分类查询
-    async getCategoryMovies(ctx,next) {
-        const { category,area,year,num,page } = ctx.query
-        const result = await movieService.findCategoryMovies(category,area,year,num,page)
         ctx.body = result
     }
 }

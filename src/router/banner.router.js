@@ -14,6 +14,6 @@ bannerRouter.get('/',getBanners)
 bannerRouter.delete('/:bannerId',remove)
 
 // 编辑轮播图的某一项
-bannerRouter.patch('/:bannerId',update)
+bannerRouter.patch('/update',update)
 
 module.exports = bannerRouter
