@@ -17,8 +17,8 @@ class BannerController {
 
     // 编辑banner某一项
     async update(ctx,next) {
-      const { title,movieID,category3,introduction,id } = ctx.request.body
-      await bannerService.updateBanners(title,movieID,category3,introduction,id)
+      const { title,movieID,category3,introduction,image_desc,id } = ctx.request.body
+      await bannerService.updateBanners(title,movieID,category3,introduction,image_desc,id)
       ctx.body = '编辑成功'
     }
 }
