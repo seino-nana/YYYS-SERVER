@@ -25,9 +25,9 @@ class BannerService {
     }
 
     // 编辑
-    async updateBanners(title,movieID,category3,id){
-      const statement = `UPDATE banner SET title = ?,movieID = ?,category3 = ? WHERE id = ?;`
-      const result = await connection.execute(statement,[title,movieID,category3,id])
+    async updateBanners(title,movieID,category3,introduction,id){
+      const statement = `UPDATE banner SET title = ?,movieID = ?,category3 = ?,introduction = ? WHERE id = ?;`
+      const result = await connection.execute(statement,[title,movieID,category3,introduction,id])
       return result[0] 
     }
 }
