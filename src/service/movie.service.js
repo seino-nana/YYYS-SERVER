@@ -1,14 +1,13 @@
 const connection = require("../app/database");
 class MovieService {
   // 查询个数
-  // async finAllCount() {
-  //   const statement = `SELECT count(1) as count 
-  //   from movie 
-  //   where category2 = 3 limit 0,10;`
-  //   const result = await connection.execute(statement, []);
-  //   console.log(result[0]);
-  //   return result[0] 
-  // }
+  async finAllCount() {
+    const statement = `SELECT count(1) from movie as count
+    where category2 = 3 limit 0,10;`
+    const result = await connection.execute(statement, []);
+    console.log(result[0]);
+    return result[0] 
+  }
   // 按条件分类查询
   async findCategoryMovies(category, area, year, num, page) {
     const _category = '%' + category + '%'

@@ -1,11 +1,11 @@
 const movieService = require('../service/movie.service')
 
 class MovieController {
-    // async getCount(ctx,next) {
-    //     // const result1 = await movieService.findAll(num,page)
-    //     const result2 = await movieService.finAllCount() 
-    //     ctx.body = result2[0]
-    // } 
+    async getCount(ctx,next) {
+        // const result1 = await movieService.findAll(num,page)
+        const result2 = await movieService.finAllCount() 
+        ctx.body = result2
+    } 
     // 按条件分类查询
     async getCategoryMovies(ctx,next) {
         const { category,area,year,num,page } = ctx.query

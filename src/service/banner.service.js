@@ -6,7 +6,7 @@ class BannerService {
       const offset = "" + ((page - 1) * num)
       const limit = num
       if(!category3) {
-        const statement = `select *,(SELECT count(1) from banner) as count FROM banner LIMIT ? OFFSET ?;`
+        const statement = `select *,(SELECT count(1) from banner) as count FROM banner ORDER BY update_time desc LIMIT ? OFFSET ?;`
         const result = await connection.execute(statement,[limit,offset])
         return result[0]
       } else {
