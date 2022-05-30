@@ -174,5 +174,12 @@ class MovieService {
     const result = await connection.execute(statement, [query, limit, offset])
     return result[0]
   }
+
+  // 提交Bug
+  async submit(content) {
+    const statement = `INSERT INTO problem (content) values (?);`
+    const result = await connection.execute(statement,[content])
+    return result[0]
+  }
 }
 module.exports = new MovieService() 

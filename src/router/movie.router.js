@@ -1,6 +1,7 @@
 const Router = require('koa-router')
 
 const { 
+        getProblem,
         getCount,
         getDetail,
         update,
@@ -42,6 +43,8 @@ dataRouter.get('/search/director',getSearchDirector)
 
 // 按条件分类查询
 dataRouter.get('/search/category',getCategoryMovies)
+
+dataRouter.get('/problem',getProblem)
 
 module.exports = dataRouter
 

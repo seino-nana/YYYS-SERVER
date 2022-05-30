@@ -64,6 +64,13 @@ class MovieController {
         const result = await movieService.findSearchDirector(query,num,page)
         ctx.body = result
     }
+
+    // 提交bug
+    async getProblem(ctx,next) {
+        const { problem } = ctx.query
+        await movieService.submit(problem)
+        ctx.body = '提交成功'
+    }
 }
 
 module.exports = new MovieController()
