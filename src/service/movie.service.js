@@ -188,5 +188,14 @@ class MovieService {
     const result = await connection.execute(statement,[id])
     return result[0]
   }
+
+  // 按热度获取
+  async getHot(page,num){
+    const offset = "" + ((page - 1) * num)
+    const limit = num
+    const statement = `SELECT * FROM movie ORDER BY play_count desc LIMIT ? OFFSET ?;`
+    const result = await connection.execute(statement,[limit,offset])
+    return result[0]
+  }
 }
 module.exports = new MovieService() 

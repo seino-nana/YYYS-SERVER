@@ -1,6 +1,7 @@
 const Router = require('koa-router')
 
 const { 
+  getHot,
   addPlayCount,
   getProblem,
   getCount,
@@ -47,6 +48,9 @@ dataRouter.get('/search/category',getCategoryMovies)
 
 // 增加点击量
 dataRouter.get('/addPlayCount',addPlayCount)
+
+// 按热度获取
+dataRouter.get('/hot',getHot)
 
 // 提交bug
 dataRouter.get('/problem',getProblem)

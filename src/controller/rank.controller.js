@@ -1,9 +1,10 @@
 const rankService = require('../service/rank.service')
 
-class BannerController {
+class RankController {
     // 获取最新电影
     async getNewest(ctx,next) {
-      const result = await rankService.getNewest()
+      const { page,num } = ctx.query
+      const result = await rankService.getNewest(page,num)
       ctx.body = result
     }
 
@@ -24,8 +25,6 @@ class BannerController {
       const result = await rankService.deleteNewest(newestId)
       ctx.body="删除" + newestId + '成功'
     }
-
-   
 }
 
-module.exports = new BannerController()
+module.exports = new RankController()

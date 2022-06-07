@@ -1,9 +1,11 @@
 const connection = require('../app/database')
 
 class RankService {
-  async getNewest(){
-    const statement = `SELECT * FROM newest ORDER BY update_time desc;`
-    const result = await connection.execute(statement)
+  async getNewest(page,num){
+    const offset = "" + ((page - 1) * num)
+    const limit = num
+    const statement = `SELECT * FROM newest ORDER BY update_time desc LIMIT ? OFFSET ?;`
+    const result = await connection.execute(statement,[limit,offset])
     return result[0]
   }
   // 编辑最新电影
@@ -11,29 +13,25 @@ class RankService {
     const {
       id,
       name,
-      movieID,
-      image_thumb
+      movieID
     } = movie
 
     if (!id) {
       const statement = `INSERT INTO newest (
         name,
-        movieID,
-        image_thumb
-        ) VALUES (?,?,?);`
-      await connection.execute(statement,[name,movieID,image_thumb])
+        movieID
+        ) VALUES (?,?);`
+      await connection.execute(statement,[name,movieID])
       return true
     } else {
       const statement = `UPDATE newest SET 
       name = ?,
-      movieID = ?,
-      image_thumb = ?
+      movieID = ?
       WHERE id = ?;
       `
       await connection.execute(statement,[
         name,
         movieID,
-        image_thumb,
         id
       ])
       return false

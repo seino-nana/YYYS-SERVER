@@ -80,6 +80,13 @@ class MovieController {
       await movieService.addPlayCount(id)
       ctx.body = id + '+1'
     }
+
+    // 按热度获取
+    async getHot(ctx,next) {
+      const { page,num } = ctx.query
+      const result = await movieService.getHot(page,num)
+      ctx.body = result
+    }
 }
 
 module.exports = new MovieController()
