@@ -12,12 +12,14 @@ class MovieController {
         const result = await movieService.findCategoryMovies(category,area,year,num,page)
         ctx.body = result
     }
+    // 获取信息
     async getDetail(ctx,next) {
         const { id } = ctx.query
         // const result = await movieService.getDetail(movieId)
         const result = await movieService.findId(id)
         ctx.body = result
     }
+    // 添加+编辑
     async update(ctx,next) { 
       const movie = ctx.request.body
       const result = await movieService.updateMovie(movie)
@@ -67,8 +69,8 @@ class MovieController {
 
     // 提交bug
     async getProblem(ctx,next) {
-        const { problem } = ctx.query
-        await movieService.submit(problem)
+        const { content } = ctx.query
+        await movieService.submit(content)
         ctx.body = '提交成功'
     }
 }

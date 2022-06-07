@@ -44,6 +44,7 @@ dataRouter.get('/search/director',getSearchDirector)
 // 按条件分类查询
 dataRouter.get('/search/category',getCategoryMovies)
 
+// 提交bug
 dataRouter.get('/problem',getProblem)
 
 module.exports = dataRouter
