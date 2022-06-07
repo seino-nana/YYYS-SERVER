@@ -73,6 +73,13 @@ class MovieController {
         await movieService.submit(content)
         ctx.body = '提交成功'
     }
+    
+    // 增加点击量
+    async addPlayCount(ctx,next) {
+      const { id } = ctx.query
+      await movieService.addPlayCount(id)
+      ctx.body = id + '+1'
+    }
 }
 
 module.exports = new MovieController()

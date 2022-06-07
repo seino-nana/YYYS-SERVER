@@ -181,5 +181,12 @@ class MovieService {
     const result = await connection.execute(statement,[content])
     return result[0]
   }
+
+  // 增加点击量
+  async addPlayCount(id){
+    const statement = `update movie set play_count = play_count + 1 WHERE id = ?;`
+    const result = await connection.execute(statement,[id])
+    return result[0]
+  }
 }
 module.exports = new MovieService() 

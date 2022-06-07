@@ -1,18 +1,19 @@
 const Router = require('koa-router')
 
 const { 
-        getProblem,
-        getCount,
-        getDetail,
-        update,
-        remove,
-        getCategory2,
-        getCategory2deep,
-        getSearchName,
-        getSearchActors,
-        getSearchDirector,
-        getCategoryMovies,
-      } = require('../controller/movie.controller')
+  addPlayCount,
+  getProblem,
+  getCount,
+  getDetail,
+  update,
+  remove,
+  getCategory2,
+  getCategory2deep,
+  getSearchName,
+  getSearchActors,
+  getSearchDirector,
+  getCategoryMovies,
+} = require('../controller/movie.controller')
 const dataRouter = new Router({prefix: '/movies'})
 
 // 获取所有信息（个数）
@@ -43,6 +44,9 @@ dataRouter.get('/search/director',getSearchDirector)
 
 // 按条件分类查询
 dataRouter.get('/search/category',getCategoryMovies)
+
+// 增加点击量
+dataRouter.get('/addPlayCount',addPlayCount)
 
 // 提交bug
 dataRouter.get('/problem',getProblem)
