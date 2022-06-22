@@ -3,13 +3,13 @@ const movieService = require('../service/movie.service')
 class MovieController {
     async getCount(ctx,next) {
         // const result1 = await movieService.findAll(num,page)
-        const result2 = await movieService.finAllCount() 
-        ctx.body = result2
+        // const result2 = await movieService.finAllCount() 
+        // ctx.body = result2
     } 
     // 按条件分类查询
     async getCategoryMovies(ctx,next) {
-        const { category,area,year,num,page } = ctx.query
-        const result = await movieService.findCategoryMovies(category,area,year,num,page)
+        const { category,area,year,sort,num,page } = ctx.query
+        const result = await movieService.findCategoryMovies(category,area,year,sort,num,page)
         ctx.body = result
     }
     // 获取信息
