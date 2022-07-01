@@ -1,13 +1,33 @@
 const connection = require("../app/database");
 class MovieService {
+  // 获取关键表的数量(成员,问题,电影总数,访客)
+  async findCount() {
+    const statement = `
+      SELECT count(*) as problemCount from user
+      UNION ALL
+      SELECT count(*) as problemCount from problem
+      UNION ALL
+      SELECT count(*) as movieCount from movie;`
+    const result = await connection.execute(statement, [])
+    return result[0]
+  }
   // 查询个数
-  // async finAllCount() {
-  //   const statement = `SELECT count(1) from movie as count
-  //   where category2 = 3 limit 0,10;`
-  //   const result = await connection.execute(statement, []);
-  //   console.log(result[0]);
-  //   return result[0] 
-  // }
+  async findCategoryCount() {
+    const statement = `select count(*) as count,
+                         count(category2='1' or null) as dongzuo,
+                         count(category2='2' or null) as aiqing, 
+                         count(category2='3' or null) as kehuan, 
+                         count(category2='4' or null) as kongbu, 
+                         count(category2='5' or null) as zhanzheng,
+                         count(category2='6' or null) as xiju,
+                         count(category2='7' or null) as jilu,
+                         count(category2='8' or null) as fanzui,
+                         count(category2='9' or null) as juqing,
+                         count(category2= 10 or null) as donghua
+                      from movie;`
+    const result = await connection.execute(statement, []);
+    return result[0]
+  }
   // 按条件分类查询
   async findCategoryMovies(category, area, year, sort, num, page) {
     const _category = '%' + category + '%'
@@ -15,7 +35,7 @@ class MovieService {
     const _year = '%' + year + '%'
     const offset = "" + ((page - 1) * num)
     const limit = num
-    if(!sort) {
+    if (!sort) {
       const statement = `
       select *,(SELECT count(1) from movie 
         WHERE category3 LIKE ? 
@@ -25,13 +45,13 @@ class MovieService {
         category3 LIKE ? 
         AND area LIKE ? 
         AND year LIKE ? 
-        ORDER BY update_time desc 
+        ORDER BY create_time desc 
         LIMIT ? OFFSET ?;
-      ` 
-      const result = await connection.execute(statement, [_category, _area, _year,_category, _area, _year, limit, offset])
+      `
+      const result = await connection.execute(statement, [_category, _area, _year, _category, _area, _year, limit, offset])
       return result[0]
     }
-    else if(sort='最热'){
+    else if (sort = '最热') {
       const statement = `
       select *,(SELECT count(1) from movie 
         WHERE category3 LIKE ? 
@@ -43,11 +63,11 @@ class MovieService {
         AND year LIKE ? 
         ORDER BY play_count desc
         LIMIT ? OFFSET ?;
-      ` 
-      const result = await connection.execute(statement, [_category, _area, _year,_category, _area, _year, limit, offset])
-      return result[0] 
+      `
+      const result = await connection.execute(statement, [_category, _area, _year, _category, _area, _year, limit, offset])
+      return result[0]
     }
-    else if(sort='最新'){
+    else if (sort = '最新') {
       const statement = `
       select *,(SELECT count(1) from movie 
         WHERE category3 LIKE ? 
@@ -59,9 +79,9 @@ class MovieService {
         AND year LIKE ? 
         ORDER BY create_time desc
         LIMIT ? OFFSET ?;
-      ` 
-      const result = await connection.execute(statement, [_category, _area, _year,_category, _area, _year, limit, offset])
-      return result[0]  
+      `
+      const result = await connection.execute(statement, [_category, _area, _year, _category, _area, _year, limit, offset])
+      return result[0]
     }
   }
   // 通过movieId查询
@@ -138,7 +158,7 @@ class MovieService {
       now_movie = ? 
       WHERE id = ?;
       `
-      await connection.execute(statement,[
+      await connection.execute(statement, [
         name,
         category1,
         category2,
@@ -165,7 +185,7 @@ class MovieService {
   }
   // 通过category2查询(浅)
   async findCategory2(type) {
-    const statement = `SELECT * FROM movie WHERE category2 = ?;`
+    const statement = `select *,(SELECT count(1) from movie) as count FROM movie WHERE category2 = ?;`
     const result = await connection.execute(statement, [type])
 
     return result[0];
@@ -212,23 +232,23 @@ class MovieService {
   // 提交Bug
   async submit(content) {
     const statement = `INSERT INTO problem (content) values (?);`
-    const result = await connection.execute(statement,[content])
+    const result = await connection.execute(statement, [content])
     return result[0]
   }
 
   // 增加点击量
-  async addPlayCount(id){
+  async addPlayCount(id) {
     const statement = `update movie set play_count = play_count + 1 WHERE id = ?;`
-    const result = await connection.execute(statement,[id])
+    const result = await connection.execute(statement, [id])
     return result[0]
   }
 
   // 按热度获取
-  async getHot(page,num){
+  async getHot(page, num) {
     const offset = "" + ((page - 1) * num)
     const limit = num
     const statement = `SELECT * FROM movie ORDER BY play_count desc LIMIT ? OFFSET ?;`
-    const result = await connection.execute(statement,[limit,offset])
+    const result = await connection.execute(statement, [limit, offset])
     return result[0]
   }
 }

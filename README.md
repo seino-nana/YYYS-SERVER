@@ -987,7 +987,7 @@
 
 请求URL：
 
-- `https://www.3154movie.com/hot`
+- `https://www.3154movie.com/movies/hot`
 
 请求方式：
 
@@ -1280,3 +1280,58 @@
 返回参数说明：无
 
 备注：无
+
+### 获取分类个数
+
+简要描述：
+
+- 获取分类个数
+
+请求URL：
+
+- `https://www.3154movie.com/movies`
+
+请求方式：
+
+- GET
+
+参数：无
+
+调用例子：`https://www.3154movie.com/movies`
+
+返回示例：
+
+```
+{
+    "count": 34641,
+    "dongzuo": 5043,
+    "aiqing": 4140,
+    "kehuan": 1395,
+    "kongbu": 3029,
+    "zhanzheng": 969,
+    "xiju": 4687,
+    "jilu": 1066,
+    "fanzui": 1202,
+    "juqing": 11351,
+    "donghua": 1759
+}
+```
+
+返回参数说明：
+
+| 参数名    | 必选 | 类型   | 说明       |
+| :-------- | :--- | :----- | ---------- |
+| count     | 是   | number | 电影总数   |
+| dongzuo   | 是   | number | 动作片数量 |
+| aiqing    | 是   | number | 爱情片数量 |
+| kehuan    | 是   | number | 科幻片数量 |
+| kongbu    | 是   | number | 恐怖片数量 |
+| zhanzheng | 是   | number | 战争片数量 |
+| xiju      | 是   | number | 喜剧片数量 |
+| jilu      | 是   | number | 纪录片数量 |
+| fanzui    | 是   | number | 犯罪片数量 |
+| juqing    | 是   | number | 剧情片数量 |
+| donghua   | 是   | number | 动画片数量 |
+
+备注：无
+

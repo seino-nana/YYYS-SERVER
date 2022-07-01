@@ -4,6 +4,7 @@ const {
   getHot,
   addPlayCount,
   getProblem,
+  getCategoryCount,
   getCount,
   getDetail,
   update,
@@ -17,8 +18,11 @@ const {
 } = require('../controller/movie.controller')
 const dataRouter = new Router({prefix: '/movies'})
 
-// 获取所有信息（个数）
-// dataRouter.get('/', getCount) 
+// 获取所有信息（个数）(成员,问题,电影总数,访客)
+dataRouter.get('/', getCount) 
+
+// 获取每个电影分类的个数
+dataRouter.get('/categoryCount',getCategoryCount)
 
 // 查询id的所有信息
 dataRouter.get('/detail',getDetail)
@@ -54,6 +58,7 @@ dataRouter.get('/hot',getHot)
 
 // 提交bug
 dataRouter.get('/problem',getProblem)
+
 
 module.exports = dataRouter
 
