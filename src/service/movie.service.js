@@ -3,11 +3,14 @@ class MovieService {
   // 获取关键表的数量(成员,问题,电影总数,访客)
   async findCount() {
     const statement = `
-      SELECT count(*) as problemCount from user
+      SELECT count(*) as count from user
       UNION ALL
-      SELECT count(*) as problemCount from problem
+      SELECT count(*) as count from problem
       UNION ALL
-      SELECT count(*) as movieCount from movie;`
+      SELECT count(*) as count from movie 
+      UNION ALL
+      SELECT count(*) as count from visitor
+      ;`
     const result = await connection.execute(statement, [])
     return result[0]
   }
@@ -229,10 +232,18 @@ class MovieService {
     return result[0]
   }
 
-  // 提交Bug
-  async submit(content) {
-    const statement = `INSERT INTO problem (content) values (?);`
-    const result = await connection.execute(statement, [content])
+  // 提交用户反馈
+  async submit(title,content) {
+    const statement = `INSERT INTO problem (title,content) values (?,?);`
+    const result = await connection.execute(statement, [title,content])
+    return result[0]
+  }
+  // 获取用户反馈
+  async getProblem(page,num) {
+    const offset = "" + ((page - 1) * num)
+    const limit = num
+    const statement = `select *,(SELECT count(1) from problem) as count FROM problem ORDER BY create_time desc LIMIT ? OFFSET ?;`
+    const result = await connection.execute(statement, [limit, offset])
     return result[0]
   }
 
@@ -248,6 +259,22 @@ class MovieService {
     const offset = "" + ((page - 1) * num)
     const limit = num
     const statement = `SELECT * FROM movie ORDER BY play_count desc LIMIT ? OFFSET ?;`
+    const result = await connection.execute(statement, [limit, offset])
+    return result[0]
+  }
+
+  // 添加访问信息
+  async addVisitor(address, ads) {
+    const statement = `INSERT INTO visitor (address,ads) values (?,?);`
+    const result = await connection.execute(statement, [address, ads])
+    return result[0]
+  }
+
+  // 获取访客信息
+  async getVisitor(page, num) {
+    const offset = "" + ((page - 1) * num)
+    const limit = num
+    const statement = `select *,(SELECT count(1) from visitor) as count FROM visitor ORDER BY create_time desc LIMIT ? OFFSET ?;`
     const result = await connection.execute(statement, [limit, offset])
     return result[0]
   }

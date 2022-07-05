@@ -1,4 +1,6 @@
-## 接口文档
+# 接口文档
+
+## 业务组
 
 ### 获取轮播图
 
@@ -1249,15 +1251,15 @@
 
 备注：传递参数时需要封装到movie数组中，携带id时为编辑状态，否则为添加。
 
-### bug提交
+### 添加用户反馈
 
 简要描述：
 
-- bug提交
+- 添加用户反馈
 
 请求URL：
 
-- `https://www.3154movie.com/problem`
+- `https://www.3154movie.com/movies/addProblem`
 
 请求方式：
 
@@ -1267,14 +1269,84 @@
 
 | 参数名  | 必选 | 类型   | 说明     |
 | :------ | :--- | :----- | -------- |
+| title   | 是   | string | 标题     |
 | content | 是   | string | 提交内容 |
 
-调用例子：`https://www.3154movie.com/movies/problem?content=123`
+调用例子：`https://www.3154movie.com/movies/addProblem?title=这是一个标题&content=这是一个内容`
 
 返回示例：
 
 ```
 '提交成功'
+```
+
+返回参数说明：无
+
+备注：无
+
+### 获取用户反馈(后台)
+
+简要描述：
+
+- 获取用户反馈
+
+请求URL：
+
+- `https://www.3154movie.com/movies/problem`
+
+请求方式：
+
+- GET
+
+参数：
+
+| 参数名 | 必选 | 类型   | 说明   |
+| :----- | :--- | :----- | ------ |
+| page   | 是   | string | 页码   |
+| num    | 是   | string | 页码量 |
+
+调用例子：`https://www.3154movie.com/movies/problem?page=1&num=5`
+
+返回示例：
+
+```
+[
+    {
+        "id": 8,
+        "title": "未指定标题",
+        "content": "sss",
+        "create_time": "2022-07-05T04:32:12.000Z",
+        "count": 8
+    },
+    {
+        "id": 7,
+        "title": "标题",
+        "content": "内容",
+        "create_time": "2022-07-05T03:59:29.000Z",
+        "count": 8
+    },
+    {
+        "id": 6,
+        "title": "标题",
+        "content": "内容",
+        "create_time": "2022-07-05T03:17:44.000Z",
+        "count": 8
+    },
+    {
+        "id": 1,
+        "title": null,
+        "content": "视频进入全屏后没有后退键",
+        "create_time": "2022-07-05T03:05:53.000Z",
+        "count": 8
+    },
+    {
+        "id": 2,
+        "title": null,
+        "content": "233",
+        "create_time": "2022-07-05T03:05:53.000Z",
+        "count": 8
+    }
+]
 ```
 
 返回参数说明：无
@@ -1289,7 +1361,7 @@
 
 请求URL：
 
-- `https://www.3154movie.com/movies`
+- `https://www.3154movie.com/movies/categoryCount`
 
 请求方式：
 
@@ -1297,7 +1369,7 @@
 
 参数：无
 
-调用例子：`https://www.3154movie.com/movies`
+调用例子：`https://www.3154movie.com/movies/categoryCount`
 
 返回示例：
 
@@ -1334,4 +1406,148 @@
 | donghua   | 是   | number | 动画片数量 |
 
 备注：无
+
+### 获取所有信息个数
+
+简要描述：
+
+- 获取所有信息个数
+
+请求URL：
+
+- `https://www.3154movie.com/movies`
+
+请求方式：
+
+- GET
+
+参数：无
+
+调用例子：`https://www.3154movie.com/movies`
+
+返回示例：
+
+```
+[
+    {
+        "count": 1
+    },
+    {
+        "count": 5
+    },
+    {
+        "count": 34641
+    }
+]
+```
+
+返回参数说明：
+
+| 参数名 | 必选 | 类型   | 说明     |
+| :----- | :--- | :----- | -------- |
+| count  | 是   | number | 用户数量 |
+| count  | 是   | number | 问题数量 |
+| count  | 是   | number | 电影数量 |
+| count  | 是   | number | 访客数   |
+
+备注：无
+
+### 添加访客信息
+
+简要描述：
+
+- 添加访客信息
+
+请求URL：
+
+- `https://www.3154movie.com/movies/addVisitor`
+
+请求方式：
+
+- GET
+
+参数：无
+
+调用例子：`https://www.3154movie.com/movies/addVisitor?address=湖南省&ads=湖南省长沙市`
+
+返回示例：
+
+```
+添加成功
+```
+
+返回参数说明：无
+
+备注：无
+
+### 获取访客信息(后台)
+
+简要描述：
+
+- 获取访客信息
+
+请求URL：
+
+- `https://www.3154movie.com/movies/visitor`
+
+请求方式：
+
+- GET
+
+参数：
+
+| 参数名 | 必选 | 类型   | 说明   |
+| :----- | :--- | :----- | ------ |
+| page   | 是   | string | 页码   |
+| num    | 是   | string | 页码量 |
+
+调用例子：`https://www.3154movie.com/movies/visitor?page=1&num=5`
+
+返回示例：
+
+```
+[
+    {
+        "id": 29,
+        "address": "湖南",
+        "ads": "湖南省长沙市",
+        "create_time": "2022-07-05T04:58:08.000Z",
+        "count": 25
+    },
+    {
+        "id": 28,
+        "address": "湖南省",
+        "ads": "湖南省长沙市雨花区东塘街道芙蓉中路513号长沙市第一社会福利院",
+        "create_time": "2022-07-05T04:40:15.000Z",
+        "count": 25
+    },
+    {
+        "id": 27,
+        "address": "北京市",
+        "ads": "北京市东城区东华门街道东华门大街56号北京故宫酒文化有限公司",
+        "create_time": "2022-07-05T04:32:39.000Z",
+        "count": 25
+    },
+    {
+        "id": 26,
+        "address": "北京市",
+        "ads": "北京市东城区东华门街道东华门大街56号北京故宫酒文化有限公司",
+        "create_time": "2022-07-05T04:02:09.000Z",
+        "count": 25
+    },
+    {
+        "id": 25,
+        "address": "北京市",
+        "ads": "北京市东城区东华门街道东华门大街56号北京故宫酒文化有限公司",
+        "create_time": "2022-07-05T03:58:55.000Z",
+        "count": 25
+    }
+]
+```
+
+返回参数说明：无
+
+备注：无
+
+## 用户组
 

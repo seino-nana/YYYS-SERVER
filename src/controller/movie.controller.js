@@ -1,7 +1,7 @@
 const movieService = require('../service/movie.service')
 
 class MovieController {
-    // 获取关键表的数量(成员,问题,电影总数,访客)
+    // 获取所有信息个数(成员,问题,电影总数,访客)
     async getCount(ctx, next) {
         const result = await movieService.findCount()
         ctx.body = result
@@ -73,11 +73,17 @@ class MovieController {
         ctx.body = result
     }
 
-    // 提交bug
-    async getProblem(ctx, next) {
-        const { content } = ctx.query
-        await movieService.submit(content)
+    // 提交用户反馈
+    async addProblem(ctx, next) {
+        const { title,content } = ctx.query
+        await movieService.submit(title,content)
         ctx.body = '提交成功'
+    }
+    // 获取用户反馈
+    async getProblem(ctx, next) {
+        const { page,num } = ctx.query
+        const result = await movieService.getProblem(page,num)
+        ctx.body = result
     }
 
     // 增加点击量
@@ -92,6 +98,20 @@ class MovieController {
         const { page, num } = ctx.query
         const result = await movieService.getHot(page, num)
         ctx.body = result
+    }
+
+    // 添加访客信息
+    async addVisitor(ctx, next) {
+      const { address,ads } = ctx.query
+      await movieService.addVisitor(address,ads)
+      ctx.body = '添加成功'
+    }
+
+    // 获取访客信息
+    async getVisitor(ctx,next) {
+      const { page,num } = ctx.query
+      const result = await movieService.getVisitor(page,num)
+      ctx.body = result
     }
 }
 

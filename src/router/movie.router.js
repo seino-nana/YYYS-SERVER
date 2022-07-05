@@ -3,6 +3,7 @@ const Router = require('koa-router')
 const { 
   getHot,
   addPlayCount,
+  addProblem,
   getProblem,
   getCategoryCount,
   getCount,
@@ -15,6 +16,8 @@ const {
   getSearchActors,
   getSearchDirector,
   getCategoryMovies,
+  addVisitor,
+  getVisitor
 } = require('../controller/movie.controller')
 const dataRouter = new Router({prefix: '/movies'})
 
@@ -56,9 +59,16 @@ dataRouter.get('/addPlayCount',addPlayCount)
 // 按热度获取
 dataRouter.get('/hot',getHot)
 
-// 提交bug
+// 提交用户反馈
+dataRouter.get('/addProblem',addProblem)
+// 获取用户反馈
 dataRouter.get('/problem',getProblem)
 
+// 添加访客信息
+dataRouter.get('/addVisitor',addVisitor)
+
+// 获取访客信息
+dataRouter.get('/visitor',getVisitor)
 
 module.exports = dataRouter
 
