@@ -46,9 +46,9 @@ class MovieController {
         const result = await movieService.findCategory2(type)
         ctx.body = result
     }
-    async getCategory2deep(ctx, next) {
+    async getCategory3deep(ctx, next) { 
         const { type, num, page } = ctx.query
-        const result = await movieService.findCategory2deep(type, num, page)
+        const result = await movieService.findCategory3deep(type, num, page)
         ctx.body = result
     }
 

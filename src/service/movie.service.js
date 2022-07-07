@@ -54,23 +54,8 @@ class MovieService {
       const result = await connection.execute(statement, [_category, _area, _year, _category, _area, _year, limit, offset])
       return result[0]
     }
-    else if (sort = '最热') {
-      const statement = `
-      select *,(SELECT count(1) from movie 
-        WHERE category3 LIKE ? 
-        AND area LIKE ? 
-        AND year LIKE ?
-      ) as count FROM movie WHERE 
-        category3 LIKE ? 
-        AND area LIKE ? 
-        AND year LIKE ? 
-        ORDER BY play_count desc
-        LIMIT ? OFFSET ?;
-      `
-      const result = await connection.execute(statement, [_category, _area, _year, _category, _area, _year, limit, offset])
-      return result[0]
-    }
-    else if (sort = '最新') {
+    
+    else if (sort == '最新') {
       const statement = `
       select *,(SELECT count(1) from movie 
         WHERE category3 LIKE ? 
@@ -81,6 +66,22 @@ class MovieService {
         AND area LIKE ? 
         AND year LIKE ? 
         ORDER BY create_time desc
+        LIMIT ? OFFSET ?;
+      `
+      const result = await connection.execute(statement, [_category, _area, _year, _category, _area, _year, limit, offset])
+      return result[0]
+    }
+    else if (sort == '最热') {
+      const statement = `
+      select *,(SELECT count(1) from movie 
+        WHERE category3 LIKE ? 
+        AND area LIKE ? 
+        AND year LIKE ?
+      ) as count FROM movie WHERE 
+        category3 LIKE ? 
+        AND area LIKE ? 
+        AND year LIKE ? 
+        ORDER BY play_count desc
         LIMIT ? OFFSET ?;
       `
       const result = await connection.execute(statement, [_category, _area, _year, _category, _area, _year, limit, offset])
@@ -193,12 +194,13 @@ class MovieService {
 
     return result[0];
   }
-  // 通过category2查询(深度,必带个数,页码)
-  async findCategory2deep(type, num, page) {
+  // 通过category3查询(深度,必带个数,页码)
+  async findCategory3deep(type, num, page) {
+    const _type = '%' + type + '%'
     const offset = "" + ((page - 1) * num)
     const limit = num
-    const statement = `SELECT * FROM movie WHERE category2 = ?  LIMIT ? OFFSET ?;`
-    const result = await connection.execute(statement, [type, limit, offset])
+    const statement = `SELECT * FROM movie WHERE category3 LIKE ? ORDER BY create_time desc  LIMIT ? OFFSET ?;`
+    const result = await connection.execute(statement, [_type, limit, offset])
 
     return result[0]
   }

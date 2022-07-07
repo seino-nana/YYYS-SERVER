@@ -11,7 +11,7 @@ const {
   update,
   remove,
   getCategory2,
-  getCategory2deep,
+  getCategory3deep,
   getSearchName,
   getSearchActors,
   getSearchDirector,
@@ -39,8 +39,8 @@ dataRouter.delete('/:movieId',remove)
 // 根据category2查询信息
 dataRouter.get('/category2',getCategory2)
 
-// 根据category2查询信息(深度查询)
-dataRouter.get('/category2/deep',getCategory2deep)
+// 根据category3查询信息(深度查询)
+dataRouter.get('/category3/deep',getCategory3deep)
  
 // 根据关键字查询
 // 关键字查询电影名
