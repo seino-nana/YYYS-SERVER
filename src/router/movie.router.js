@@ -19,6 +19,12 @@ const {
   addVisitor,
   getVisitor
 } = require('../controller/movie.controller')
+
+// verifyAuth验证是否为该网站的用户(通过token)
+// verifyAuth1验证是否为超级管理员(通过token)
+// verifyAuth2验证是否为管理员(通过token)
+const { verifyAuth,verifyAuth1,verifyAuth2 } = require('../middleware/auth.middleware')
+
 const dataRouter = new Router({prefix: '/movies'})
 
 // 获取所有信息（个数）(成员,问题,电影总数,访客)
@@ -31,10 +37,10 @@ dataRouter.get('/categoryCount',getCategoryCount)
 dataRouter.get('/detail',getDetail)
 
 // 编辑电影
-dataRouter.post('/update',update)
+dataRouter.post('/update',verifyAuth,verifyAuth2,update)
 
 // 删除id的所有信息
-dataRouter.delete('/:movieId',remove)
+dataRouter.delete('/:movieId',verifyAuth,verifyAuth2,remove)
 
 // 根据category2查询信息
 dataRouter.get('/category2',getCategory2)

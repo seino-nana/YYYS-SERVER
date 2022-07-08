@@ -3,10 +3,11 @@ const UserService = require('../service/user.service')
 class UserController {
   // 注册用户
   async create(ctx, next) {
-    const { username, password } = ctx.request.body;
+    const { username, password,grade } = ctx.request.body;
     await UserService.create(
       username,
-      password
+      password,
+      grade
     )
     ctx.body = '用户' + username + '添加成功'
   }

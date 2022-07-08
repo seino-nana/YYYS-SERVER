@@ -5,6 +5,11 @@ const { bannersHandler } = require('../middleware/file.middleware')
 
 const { saveBannersInfo } = require('../controller/file.controller')
 
+// verifyAuth验证是否为该网站的用户(通过token)
+// verifyAuth1验证是否为超级管理员(通过token)
+// verifyAuth2验证是否为管理员(通过token)
+const { verifyAuth,verifyAuth1,verifyAuth2 } = require('../middleware/auth.middleware')
+
 const fileRouter = new Router({ prefix: '/upload' })
 
 fileRouter.post('/banners',bannersHandler,saveBannersInfo)

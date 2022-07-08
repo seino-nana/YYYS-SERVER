@@ -1551,3 +1551,246 @@
 
 ## 用户组
 
+### 用户登录
+
+简要描述：
+
+- 用户登录
+
+请求URL：
+
+- `https://www.3154movie.com/login`
+
+请求方式：
+
+- POST
+
+参数：
+
+| 参数名   | 必选 | 类型   | 说明   |
+| :------- | :--- | :----- | ------ |
+| username | 是   | string | 用户名 |
+| password | 是   | string | 密码   |
+
+调用例子：`https://www.3154movie.com/login`
+
+返回示例：
+
+```
+{
+    "id": 13,
+    "username": "zhangsan",
+    "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsInVzZXJuYW1lIjoiemhhbmdzYW4iLCJpYXQiOjE2NTcyNTI3ODgsImV4cCI6MTY1NzMzOTE4OH0.MRGXR3f-c8qY1r6st6roFHwOUrjGRR74WUG3QiTqSFfYlpMyXrkzOgJ4bpXK_QtAV9YiIb73uln46_p_GriwfCJk5hJ0Y0Akk-VYI-DzSANhPx8LO9UoE5ObgLk1wKhqf3noJd4s_VC6cN0dqwXfNsqUgNqYDRreWPl811XNyrg"
+}
+```
+
+返回参数说明：
+
+| 参数名   | 必选 | 类型   | 说明         |
+| :------- | :--- | :----- | ------------ |
+| id       | 是   | string | 用户id       |
+| username | 是   | string | 用户名       |
+| token    | 是   | string | 用户登录携带 |
+
+备注：无
+
+### 添加用户(后台)
+
+简要描述：
+
+- 新建用户(需获取token并且为一级权限)
+
+请求URL：
+
+- `https://www.3154movie.com/user`
+
+请求方式：
+
+- POST
+
+参数：
+
+| 参数名   | 必选 | 类型   | 说明   |
+| :------- | :--- | :----- | ------ |
+| username | 是   | string | 用户名 |
+| password | 是   | string | 密码   |
+| grade    | 是   | string | 权限   |
+
+调用例子：`https://www.3154movie.com/user`
+
+返回示例：
+
+```
+用户liu2添加成功
+```
+
+返回参数说明：无
+
+备注：无
+
+### 删除用户(后台)
+
+简要描述：
+
+- 删除用户(需获取token并且为一级权限)
+
+请求URL：
+
+- `https://www.3154movie.com/user/delete`
+
+请求方式：
+
+- DELETE
+
+参数：
+
+| 参数名 | 必选 | 类型   | 说明   |
+| :----- | :--- | :----- | ------ |
+| id     | 是   | string | 用户id |
+
+调用例子：`https://www.3154movie.com/user/delete?id=14`
+
+返回示例：
+
+```
+移除成功
+```
+
+返回参数说明：无
+
+备注：无
+
+### 获取当前用户信息
+
+简要描述：
+
+- 获取当前用户信息(需获取token)
+
+请求URL：
+
+- `https://www.3154movie.com/user/detail`
+
+请求方式：
+
+- GET
+
+参数：无（仅携带token）
+
+调用例子：`https://www.3154movie.com/user/detail`
+
+返回示例：
+
+```
+[
+    {
+        "id": 13,
+        "username": "zhangsan",
+        "password": "4297f44b13955235245b2497399d7a93",
+        "grade": 4,
+        "name": null,
+        "phone": null,
+        "create_time": "2022-07-08T00:56:22.000Z",
+        "update_time": null
+    }
+]
+```
+
+返回参数说明：
+
+| 参数名      | 必选 | 类型   | 说明         |
+| :---------- | :--- | :----- | ------------ |
+| id          | 是   | string | 用户id       |
+| username    | 是   | string | 用户名       |
+| password    | 是   | string | 用户登录携带 |
+| grade       | 是   | string | 权限         |
+| name        | 是   | string | 名称         |
+| phone       | 是   | number | 手机号码     |
+| create_time | 是   | string | 创建时间     |
+| update_time | 是   | string | 修改时间     |
+
+备注：无
+
+### 修改当前用户信息
+
+简要描述：
+
+- 修改用户信息(需获取token)
+
+请求URL：
+
+- `https://www.3154movie.com/user/update`
+
+请求方式：
+
+- PATCH
+
+参数：无（仅携带token）
+
+调用例子：`https://www.3154movie.com/user/update`
+
+返回示例：
+
+```
+
+```
+
+返回参数说明：无
+
+备注：无
+
+### 获取所有用户信息(后台)
+
+简要描述：
+
+- 获取当前用户信息(需获取token并且为一级权限)
+
+请求URL：
+
+- `https://www.3154movie.com/user/allUserInfo`
+
+请求方式：
+
+- GET
+
+参数：
+
+| 参数名 | 必选 | 类型   | 说明   |
+| :----- | :--- | :----- | ------ |
+| num    | 是   | string | 页码量 |
+| page   | 是   | string | 页码   |
+
+调用例子：`https://www.3154movie.com/user/allUserInfo?num=10&page=1`
+
+返回示例：
+
+```
+[
+    {
+        "id": 13,
+        "username": "zhangsan",
+        "password": "4297f44b13955235245b2497399d7a93",
+        "grade": 4,
+        "name": null,
+        "phone": null,
+        "create_time": "2022-07-08T00:56:22.000Z",
+        "update_time": null,
+        "count": 2
+    },
+    {
+        "id": 9,
+        "username": "liu",
+        "password": "e10adc3949ba59abbe56e057f20f883e",
+        "grade": 1,
+        "name": null,
+        "phone": null,
+        "create_time": "2022-03-25T07:14:05.000Z",
+        "update_time": null,
+        "count": 2
+    }
+]
+```
+
+返回参数说明：[{},{},{}]
+
+备注：无
+

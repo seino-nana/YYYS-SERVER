@@ -59,7 +59,35 @@ const verifyAuth = async (ctx, next) => {
     }
 };
 
+const verifyAuth1 = async (ctx,next) => {
+    console.log('验证是否为超级管理员');
+    // 获取id
+    const { id } = ctx.user
+    const result = await userService.verifyAuth1(id)
+    // 不符合返回权限不够
+    if(result[0].grade > 1) {
+        const error = new Error(errorType.NOT_ROOT)
+        return ctx.app.emit("error", error, ctx)
+    } 
+    await next();
+}
+
+const verifyAuth2 = async (ctx,next) => {
+    console.log('验证是否为管理员');
+    // 获取id
+    const { id } = ctx.user
+    const result = await userService.verifyAuth1(id)
+    // 不符合返回权限不够
+    if(result[0].grade > 2) {
+        const error = new Error(errorType.NOT_ROOT)
+        return ctx.app.emit("error", error, ctx)
+    } 
+    await next();
+}
+
 module.exports = {
     verifyLogin,
-    verifyAuth
+    verifyAuth,
+    verifyAuth1,
+    verifyAuth2
 }
