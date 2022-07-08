@@ -37,10 +37,10 @@ dataRouter.get('/categoryCount',getCategoryCount)
 dataRouter.get('/detail',getDetail)
 
 // 编辑电影
-dataRouter.post('/update',verifyAuth,verifyAuth2,update)
+dataRouter.post('/update',verifyAuth,verifyAuth1,update)
 
 // 删除id的所有信息
-dataRouter.delete('/:movieId',verifyAuth,verifyAuth2,remove)
+dataRouter.delete('/:movieId',verifyAuth,verifyAuth1,remove)
 
 // 根据category2查询信息
 dataRouter.get('/category2',getCategory2)

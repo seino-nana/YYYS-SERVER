@@ -23,7 +23,7 @@ const userRouter = new Router({prefix: "/user"})
 // 用户注册
 userRouter.post("/",verifyAuth,verifyAuth1,verifyUser,handlePassword,create)
 
-// 获取用户详情
+// 获取当前用户信息
 userRouter.get("/detail",verifyAuth,getUserDetail)
 
 // 获取用户信息(包含收藏/历史记录)
@@ -34,6 +34,6 @@ userRouter.patch("/update",verifyAuth,update)
 userRouter.delete("/delete",verifyAuth,verifyAuth1,remove)
 
 // 获取所有用户信息(仅限超级管理员)
-userRouter.get('/allUserInfo',verifyAuth,verifyAuth2,getallUserInfo)
+userRouter.get('/allUserInfo',verifyAuth,verifyAuth1,getallUserInfo)
 
 module.exports = userRouter
