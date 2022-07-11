@@ -17,7 +17,8 @@ const {
   getSearchDirector,
   getCategoryMovies,
   addVisitor,
-  getVisitor
+  getVisitor,
+  getvisitorWeek
 } = require('../controller/movie.controller')
 
 // verifyAuth验证是否为该网站的用户(通过token)
@@ -75,6 +76,9 @@ dataRouter.get('/addVisitor',addVisitor)
 
 // 获取访客信息
 dataRouter.get('/visitor',getVisitor)
+
+// 近7天访问记录
+dataRouter.get('/visitor/week',getvisitorWeek)
 
 module.exports = dataRouter
 

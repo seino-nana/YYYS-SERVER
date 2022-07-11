@@ -113,6 +113,12 @@ class MovieController {
       const result = await movieService.getVisitor(page,num)
       ctx.body = result
     }
+
+    // 近7天访问记录
+    async getvisitorWeek(ctx,next) {
+      const result = await movieService.getvisitorWeek()
+      ctx.body = result
+    }
 }
 
 module.exports = new MovieController()
