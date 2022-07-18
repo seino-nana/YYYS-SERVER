@@ -18,7 +18,7 @@ const {
   getCategoryMovies,
   addVisitor,
   getVisitor,
-  getvisitorWeek
+  getvisitorWeek,
 } = require('../controller/movie.controller')
 
 // verifyAuth验证是否为该网站的用户(通过token)

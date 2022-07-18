@@ -1,5 +1,5 @@
 const Multer = require('koa-multer')
-const { BANNERS_PATH } = require('../constants/file-path')
+const { BANNERS_PATH, MOVIES_PATH } = require('../constants/file-path')
 
 // const bannersUpload = Multer({
 //     dest: BANNERS_PATH,
@@ -17,10 +17,23 @@ let storage = Multer.diskStorage({
     },
 });
 
-let upload = Multer({storage:storage})
+let storage2 = Multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, MOVIES_PATH); //注意路径必须存在
+    },
+    filename: function (req, file, cb) {
+        var fileFormat = file.originalname.split('.');
+        cb(null, Date.now() + '.' + fileFormat[fileFormat.length - 1]);
+    }
+})
+
+let upload = Multer({ storage: storage })
+let upload2 = Multer({ storage: storage2 })
 
 const bannersHandler = upload.single('file')
+const moviesHandler = upload2.single('file')
 
 module.exports = {
-    bannersHandler
+    bannersHandler,
+    moviesHandler
 }

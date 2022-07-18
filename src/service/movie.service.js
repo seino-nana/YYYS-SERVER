@@ -285,19 +285,19 @@ class MovieService {
   async getvisitorWeek() {
     const statement = `select a.click_date,ifnull(b.count,0) as count
     from (
-        SELECT curdate() as click_date
-        union all
-        SELECT date_sub(curdate(), interval 1 day) as click_date
-        union all
-        SELECT date_sub(curdate(), interval 2 day) as click_date
-        union all
-        SELECT date_sub(curdate(), interval 3 day) as click_date
-        union all
-        SELECT date_sub(curdate(), interval 4 day) as click_date
-        union all
-        SELECT date_sub(curdate(), interval 5 day) as click_date
-        union all
-        SELECT date_sub(curdate(), interval 6 day) as click_date
+      SELECT curdate() as click_date
+      union all
+      SELECT date_sub(curdate(), interval 1 day) as click_date
+      union all
+      SELECT date_sub(curdate(), interval 2 day) as click_date
+      union all
+      SELECT date_sub(curdate(), interval 3 day) as click_date
+      union all
+      SELECT date_sub(curdate(), interval 4 day) as click_date
+      union all
+      SELECT date_sub(curdate(), interval 5 day) as click_date
+      union all
+      SELECT date_sub(curdate(), interval 6 day) as click_date
     ) a left join (
       select date(create_time) as datetime, count(*) as count
       from visitor
@@ -306,5 +306,6 @@ class MovieService {
     const result = await connection.execute(statement,[])
     return result[0]
   }
+
 }
 module.exports = new MovieService() 

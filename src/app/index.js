@@ -15,6 +15,8 @@ app.use(bodyParser());
 
 // 图片静态储存
 app.use(koaStatic(path.join(__dirname,'../../upload/banners')))
+// 视频静态储存
+app.use(koaStatic(path.join(__dirname,'../../upload/movies')))
 
 // 解决跨域
 app.use(async (ctx, next) => {
