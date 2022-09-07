@@ -119,6 +119,13 @@ class MovieController {
       const result = await movieService.getvisitorWeek()
       ctx.body = result
     }
+
+    // 获取腾讯视频的库
+    async gettxMovie(ctx,next){
+        const { page,num } = ctx.query
+        const result = await movieService.gettxMovie(page,num)
+        ctx.body = result
+    }
 }
 
 module.exports = new MovieController()

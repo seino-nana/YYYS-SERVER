@@ -19,6 +19,7 @@ const {
   addVisitor,
   getVisitor,
   getvisitorWeek,
+  gettxMovie
 } = require('../controller/movie.controller')
 
 // verifyAuth验证是否为该网站的用户(通过token)
@@ -79,6 +80,9 @@ dataRouter.get('/visitor',getVisitor)
 
 // 近7天访问记录
 dataRouter.get('/visitor/week',getvisitorWeek)
+
+// 获取tx视频的库
+dataRouter.get('/tx',gettxMovie)
 
 module.exports = dataRouter
 

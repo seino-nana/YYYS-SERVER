@@ -54,7 +54,7 @@ class MovieService {
       const result = await connection.execute(statement, [_category, _area, _year, _category, _area, _year, limit, offset])
       return result[0]
     }
-    
+
     else if (sort == '最新') {
       const statement = `
       select *,(SELECT count(1) from movie 
@@ -209,8 +209,13 @@ class MovieService {
     const _query = '%' + query + '%'
     const offset = "" + ((page - 1) * num)
     const limit = num
-    const statement = `SELECT * FROM movie WHERE name LIKE ? LIMIT ? OFFSET ?;`
-    const result = await connection.execute(statement, [_query, limit, offset])
+    const statement = `select *,(SELECT count(1) from movie WHERE name LIKE?)
+    as count FROM movie WHERE 
+    name LIKE ?
+    ORDER BY create_time desc
+    LIMIT ?
+    OFFSET ?;`
+    const result = await connection.execute(statement, [_query,_query, limit, offset])
     return result[0]
   }
 
@@ -235,13 +240,13 @@ class MovieService {
   }
 
   // 提交用户反馈
-  async submit(title,content) {
+  async submit(title, content) {
     const statement = `INSERT INTO problem (title,content) values (?,?);`
-    const result = await connection.execute(statement, [title,content])
+    const result = await connection.execute(statement, [title, content])
     return result[0]
   }
   // 获取用户反馈
-  async getProblem(page,num) {
+  async getProblem(page, num) {
     const offset = "" + ((page - 1) * num)
     const limit = num
     const statement = `select *,(SELECT count(1) from problem) as count FROM problem ORDER BY create_time desc LIMIT ? OFFSET ?;`
@@ -303,7 +308,16 @@ class MovieService {
       from visitor
       group by date(create_time)
     ) b on a.click_date = b.datetime;`
-    const result = await connection.execute(statement,[])
+    const result = await connection.execute(statement, [])
+    return result[0]
+  }
+
+  // 获取腾讯视频的库
+  async gettxMovie(page,num) {
+    const offset = "" + ((page - 1) * num)
+    const limit = num
+    const statement = `select * from movie2 ORDER BY id desc limit 20 OFFSET 0;`
+    const result = await connection.execute(statement,[limit,offset])
     return result[0]
   }
 

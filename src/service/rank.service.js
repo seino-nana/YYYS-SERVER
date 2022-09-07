@@ -4,7 +4,7 @@ class RankService {
   async getNewest(page,num){
     const offset = "" + ((page - 1) * num)
     const limit = num
-    const statement = `SELECT * FROM newest ORDER BY update_time desc LIMIT ? OFFSET ?;`
+    const statement = `SELECT * FROM newest ORDER BY id desc LIMIT ? OFFSET ?;`
     const result = await connection.execute(statement,[limit,offset])
     return result[0]
   }
