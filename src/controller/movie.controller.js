@@ -41,14 +41,14 @@ class MovieController {
         const result = await movieService.deleteMovie(movieId)
         ctx.body = '删除成功' + result
     }
-    async getCategory2(ctx, next) {
-        const { type } = ctx.query
-        const result = await movieService.findCategory2(type)
-        ctx.body = result
-    }
-    async getCategory3deep(ctx, next) { 
+    // async getCategory2(ctx, next) {
+    //     const { type } = ctx.query
+    //     const result = await movieService.findCategory2(type)
+    //     ctx.body = result
+    // }
+    async getCategorydeep(ctx, next) { 
         const { type, num, page } = ctx.query
-        const result = await movieService.findCategory3deep(type, num, page)
+        const result = await movieService.findCategorydeep(type, num, page)
         ctx.body = result
     }
 
@@ -120,10 +120,10 @@ class MovieController {
       ctx.body = result
     }
 
-    // 获取腾讯视频的库
-    async gettxMovie(ctx,next){
-        const { page,num } = ctx.query
-        const result = await movieService.gettxMovie(page,num)
+    // 获取头部视频的库(腾讯、优酷、爱奇艺)
+    async getHeadMovie(ctx,next){
+        const { query,page,num } = ctx.query
+        const result = await movieService.getHeadMovie(query,page,num)
         ctx.body = result
     }
 }
