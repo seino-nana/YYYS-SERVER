@@ -41,7 +41,7 @@ class MovieService {
     if (!sort) {
       const statement = `
       select *,(SELECT count(1) from movie2 
-        WHERE category LIKE ? 
+        WHERE category LIKE ?  
         AND area LIKE ? 
         AND year LIKE ?
       ) as count FROM movie2 WHERE 
@@ -200,7 +200,7 @@ class MovieService {
     ORDER BY year desc
     LIMIT ?
     OFFSET ?;`
-    const result = await connection.execute(statement, [_query,_query, limit, offset])
+    const result = await connection.execute(statement, [_query, _query, limit, offset])
     return result[0]
   }
 
@@ -209,8 +209,13 @@ class MovieService {
     const _query = '%' + query + '%'
     const offset = "" + ((page - 1) * num)
     const limit = num
-    const statement = `SELECT * FROM movie2 WHERE actors LIKE ? ORDER BY year desc LIMIT ? OFFSET ?;`
-    const result = await connection.execute(statement, [_query, limit, offset])
+    const statement = `SELECT *,(SELECT count(1) from movie2 WHERE actors LIKE ?)
+    as count FROM movie2 WHERE 
+    actors LIKE ? 
+    ORDER BY year desc 
+    LIMIT ? 
+    OFFSET ?;`
+    const result = await connection.execute(statement, [_query,_query, limit, offset])
     return result[0]
   }
 
@@ -219,8 +224,12 @@ class MovieService {
     const _query = '%' + query + '%'
     const offset = "" + ((page - 1) * num)
     const limit = num
-    const statement = `SELECT * FROM movie2 WHERE director LIKE ? ORDER BY year desc LIMIT ? OFFSET ?;`
-    const result = await connection.execute(statement, [_query, limit, offset])
+    const statement = `SELECT *,(SELECT count(1) from movie2 WHERE director LIKE ?)
+    as count FROM movie2 WHERE 
+    director LIKE ? 
+    ORDER BY year desc 
+    LIMIT ? OFFSET ?;`
+    const result = await connection.execute(statement, [_query,_query, limit, offset])
     return result[0]
   }
 
@@ -298,12 +307,16 @@ class MovieService {
   }
 
   // 获取头部视频的库
-  async getHeadMovie(query,page,num) {
+  async getHeadMovie(query, page, num) {
     const _query = '%' + query + '%'
     const offset = "" + ((page - 1) * num)
     const limit = num
-    const statement = `select * from movie2 where image_desc like ? limit ? OFFSET ?;`
-    const result = await connection.execute(statement,[_query,limit,offset])
+    const statement = `select * ,(SELECT count(1) from movie2 WHERE image_desc LIKE ?)
+    as count from movie2 
+    where image_desc like ? 
+    limit ? 
+    OFFSET ?;`
+    const result = await connection.execute(statement, [_query,_query, limit, offset])
     return result[0]
   }
 
