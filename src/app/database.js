@@ -5,7 +5,7 @@ const config = require("./config");
 const connections = mysql.createPool({
   host: 'localhost',
   port: 3306,
-  database: 'movie3154',
+  database: 'movie',
   user: 'root',
   password: 'root'
 })
