@@ -92,7 +92,7 @@ class MovieService {
   // }
   
   async getDetail(movieId) { // 获取电影信息
-    const statement = `SELECT * FROM movieInfo WHERE movieId = ?;`;
+    const statement = `SELECT * FROM movieinfo WHERE movieId = ?;`;
     const result = await connection.execute(statement, [movieId]);
     const statement2 = `select * from playurl where movieId = ? ORDER BY number asc;`;
     const result2 = await connection.execute(statement2, [movieId]);
@@ -109,7 +109,7 @@ class MovieService {
                          count(typedesc='电视剧' or null) as dianshiju, 
                          count(typedesc='综艺' or null) as zongyi,
                          count(typedesc='动漫' or null) as dongman
-                      from movieInfo;`
+                      from movieinfo;`
     const result = await connection.execute(statement, []);
     return result[0]
   }
@@ -122,7 +122,7 @@ class MovieService {
     const limit = num
     if (sort == 0||sort == 1) {
       const statement = `
-      select * FROM movieInfo WHERE 
+      select * FROM movieinfo WHERE 
         typeDesc LIKE ?
         AND cat LIKE ? 
         AND area LIKE ?
@@ -131,7 +131,7 @@ class MovieService {
         LIMIT ? OFFSET ?;`
       const result = await connection.execute(statement, [_typeDesc,_cat, _area, _year,limit, offset])
       const statement2 = `
-      SELECT count(1) as count from movieInfo
+      SELECT count(1) as count from movieinfo
         WHERE typeDesc LIKE ? 
         AND cat LIKE ? 
         AND area LIKE ? 
@@ -180,24 +180,24 @@ class MovieService {
     const limit = num
     let statement = ''
     if(range==1) { // range为1时按导演搜索
-      statement = `select *,(SELECT count(1) from movieInfo WHERE dir LIKE ?)
-      as count FROM movieInfo WHERE 
+      statement = `select *,(SELECT count(1) from movieinfo WHERE dir LIKE ?)
+      as count FROM movieinfo WHERE 
       dir LIKE ?
       ORDER BY year desc
       LIMIT ?
       OFFSET ?;` 
     }
     else if(range==2){ // range为2时按演员搜索
-      statement = `select *,(SELECT count(1) from movieInfo WHERE actors LIKE ?)
-      as count FROM movieInfo WHERE 
+      statement = `select *,(SELECT count(1) from movieinfo WHERE actors LIKE ?)
+      as count FROM movieinfo WHERE 
       actors LIKE ?
       ORDER BY year desc
       LIMIT ?
       OFFSET ?;`   
     }
     else { // 其它情况默认电影名
-      statement = `select *,(SELECT count(1) from movieInfo WHERE nm LIKE ?)
-      as count FROM movieInfo WHERE 
+      statement = `select *,(SELECT count(1) from movieinfo WHERE nm LIKE ?)
+      as count FROM movieinfo WHERE 
       nm LIKE ?
       ORDER BY year desc
       LIMIT ?

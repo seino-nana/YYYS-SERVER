@@ -7,7 +7,7 @@ const connections = mysql.createPool({
   port: 3306,
   database: 'movie',
   user: 'root',
-  password: '#Wl19960102'
+  password: 'root'
 })
 
 connections.getConnection((err, conn) => {
