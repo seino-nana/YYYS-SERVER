@@ -92,16 +92,82 @@ class MovieService {
   // }
   
   async getDetail(movieId) { // 获取电影信息
-    const statement = `SELECT * FROM movieinfo WHERE movieId = ?;`;
+    const statement = `SELECT * FROM movieinfo WHERE movieId = ?;`; // 获取电影信息
     const result = await connection.execute(statement, [movieId]);
-    const statement2 = `select * from playurl where movieId = ? ORDER BY number asc;`;
+    const statement2 = `select * from playurl where movieId = ? ORDER BY number asc;`; // 从playurl获取集数
     const result2 = await connection.execute(statement2, [movieId]);
+    const statement3 = `select actor from actors where movieid = ?;` // 从actors里获取演员
+    const result3 = await connection.execute(statement3,[movieId])
     // 集数添加到电影信息中
     const obj = {}
     obj.movieDetail = result[0][0]
     obj.movieDetail.number = result2[0]
-    console.log(obj.movieDetail.number);
+    obj.movieDetail.actors = result3[0]
     return obj;
+  }
+  async findCategoryMovies(typeDesc,cat,area,year,num,page,sort) { // 按条件分类查询
+    const _typeDesc = '%' + typeDesc + '%'
+    const _cat = '%' + cat + '%'
+    const _area = '%' + area + '%'
+    const _year = '%' + year + '%'
+    const offset = "" + ((page - 1) * num) 
+    const limit = num
+    const statement = `
+    select * FROM movieinfo 
+    WHERE typeDesc LIKE ? AND cat LIKE ? AND area LIKE ? AND year LIKE ? 
+    ORDER BY year desc 
+    LIMIT ? OFFSET ?;` // 按条件分类查询
+    const result = await connection.execute(statement, [_typeDesc,_cat, _area, _year,limit, offset])
+    const statement2 = `
+    SELECT count(1) as count from movieinfo
+    WHERE typeDesc LIKE ? 
+    AND cat LIKE ? AND area LIKE ? AND year LIKE ?` // 获取count
+    const result2 = await connection.execute(statement2,[_typeDesc,_cat, _area, _year])
+    result[0][0].searchCount = result2[0][0].count
+    // 创建新对象用来展示接口
+    const obj = {}
+    obj.movieList = result[0]
+    obj.total = result2[0][0].count
+    return obj
+  }
+  // 有可能搜 电影名：功夫，综艺名：开心，电视剧名，动漫名
+  async findSearch(keywords,range, num, page) { // 模糊查询 1
+    const _keywords = keywords + '%'
+    const offset = "" + ((page - 1) * num)
+    const limit = num
+    let statement = ''
+    let statement2 = ''
+    if(range==1) { // range为1时按导演相关
+      statement = `select * from movieinfo WHERE 
+      dir LIKE ?
+      ORDER BY year desc
+      LIMIT ? OFFSET ?;` // 获取相关信息
+      statement2 = `
+      SELECT count(1) as count from movieinfo
+      WHERE dir LIKE ?` // 获取count 
+    }
+    else if(range==2){ // range为2时按电影演员相关
+      statement = `select * from movieinfo,actors 
+      where movieinfo.movieId = actors.movieId  and actors.actor like ?
+      ORDER BY year desc
+      LIMIT ? OFFSET ?;`  // 获取相关信息
+      statement2 = `select count(1) as count from movieinfo,actors 
+      where movieinfo.movieId = actors.movieId and actors.actor like ?` // 获取count
+    }
+    else { // 其它情况按影视综
+      statement = `select * FROM movieinfo WHERE 
+      nm LIKE ?
+      ORDER BY year desc
+      LIMIT ? OFFSET ?;` // 获取相关信息
+      statement2 = `select count(1) as count FROM movieinfo 
+      WHERE nm LIKE ?` // 获取count
+    }
+    const result = await connection.execute(statement,[_keywords, limit, offset])
+    const result2 = await connection.execute(statement2,[_keywords])
+    const obj = {}
+    obj.fuzzymovie = result[0]
+    obj.count = result2[0][0].count
+    return obj
   }
   async findtypeDescCount() { // 查询typeDesc分类个数
     const statement = `select count(*) as count,
@@ -113,100 +179,6 @@ class MovieService {
     const result = await connection.execute(statement, []);
     return result[0]
   }
-  async findCategoryMovies(typeDesc,cat,area,year,num,page,sort) { // 按条件分类查询
-    const _typeDesc = '%' + typeDesc + '%'
-    const _cat = '%' + cat + '%'
-    const _area = '%' + area + '%'
-    const _year = '%' + year + '%'
-    const offset = "" + ((page - 1) * num) 
-    const limit = num
-    if (sort == 0||sort == 1) {
-      const statement = `
-      select * FROM movieinfo WHERE 
-        typeDesc LIKE ?
-        AND cat LIKE ? 
-        AND area LIKE ?
-        AND year LIKE ?
-        ORDER BY year desc 
-        LIMIT ? OFFSET ?;`
-      const result = await connection.execute(statement, [_typeDesc,_cat, _area, _year,limit, offset])
-      const statement2 = `
-      SELECT count(1) as count from movieinfo
-        WHERE typeDesc LIKE ? 
-        AND cat LIKE ? 
-        AND area LIKE ? 
-        AND year LIKE ?`
-      const result2 = await connection.execute(statement2,[_typeDesc,_cat, _area, _year])
-      result[0][0].searchCount = result2[0][0].count
-      // 创建新对象用来展示接口
-      const obj = {}
-      obj.movieList = result[0]
-      obj.total = result2[0][0].count
-      return obj
-      // 有什么
-      // 电影 =>  
-      // cat:科幻片/剧情片/喜剧片/动画片/纪录片/动作片/恐怖片/战争片/爱情片/悬疑片
-      // area:中国大陆/中国香港/中国台湾/日本/韩国/美国/英国等等
-      // 电视剧 =>
-      // cat:国产剧/香港剧/日本剧/韩国剧/马泰剧/欧美剧
-      // area:中国大陆/中国香港/中国台湾/日本/韩国/美国/英国等等
-      // 动漫 =>
-      // cat:国产动漫/日本动漫/欧美动漫
-      // area:中国大陆/中国香港/中国台湾/日本/韩国/美国/英国等等
-      // 综艺 =>
-      // cat:综艺
-      // area:中国大陆/中国香港/中国台湾/日本/韩国/美国/英国等等
-    }
-    // else if (sort == 2) {
-    //   const statement = `
-    //   select *,(SELECT count(1) from movie2 
-    //     WHERE category LIKE ? 
-    //     AND area LIKE ? 
-    //     AND year LIKE ?
-    //   ) as count FROM movie2 WHERE 
-    //     category LIKE ? 
-    //     AND area LIKE ? 
-    //     AND year LIKE ? 
-    //     ORDER BY play_count desc
-    //     LIMIT ? OFFSET ?;
-    //   `
-    //   const result = await connection.execute(statement, [_category, _area, _year, _category, _area, _year, limit, offset])
-    //   return result[0]
-    // }
-  }
-  async findSearch(keywords,range, num, page) { // 模糊查询
-    const _keywords = '%' + keywords + '%'
-    const offset = "" + ((page - 1) * num)
-    const limit = num
-    let statement = ''
-    if(range==1) { // range为1时按导演搜索
-      statement = `select *,(SELECT count(1) from movieinfo WHERE dir LIKE ?)
-      as count FROM movieinfo WHERE 
-      dir LIKE ?
-      ORDER BY year desc
-      LIMIT ?
-      OFFSET ?;` 
-    }
-    else if(range==2){ // range为2时按演员搜索
-      statement = `select *,(SELECT count(1) from movieinfo WHERE actors LIKE ?)
-      as count FROM movieinfo WHERE 
-      actors LIKE ?
-      ORDER BY year desc
-      LIMIT ?
-      OFFSET ?;`   
-    }
-    else { // 其它情况默认电影名
-      statement = `select *,(SELECT count(1) from movieinfo WHERE nm LIKE ?)
-      as count FROM movieinfo WHERE 
-      nm LIKE ?
-      ORDER BY year desc
-      LIMIT ?
-      OFFSET ?;`
-    }
-    const result = await connection.execute(statement, [_keywords, _keywords, limit, offset])
-    return result[0]
-  }
-
   // async submit(title, content) { // 提交用户反馈
   //   const statement = `INSERT INTO problem (title,content) values (?,?);`
   //   const result = await connection.execute(statement, [title, content])
