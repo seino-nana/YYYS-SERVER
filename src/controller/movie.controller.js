@@ -31,8 +31,9 @@ class MovieController {
         ctx.body = result
     }
     async getCategoryMovies(ctx, next) { // 按条件分类查询
-        const { typeDesc,cat,area,year,num,page,sort } = ctx.query
-        const result = await movieService.findCategoryMovies(typeDesc,cat,area,year,num,page,sort)
+        // 不是必传参数
+        const { typeDesc='',cat='',categorys='',area='',year='',num,page } = ctx.query
+        const result = await movieService.findCategoryMovies(typeDesc,cat,categorys,area,year,num,page)
         ctx.body = result
     }
     async getSearch(ctx, next) { // 模糊搜索
