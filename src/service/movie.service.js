@@ -192,6 +192,30 @@ class MovieService {
     const result = await connection.execute(statement, []);
     return result[0]
   }
+  async findRecommends(){ // 推荐列表
+    const statement = `select distinct type from recommends order by type asc;`
+    const result = await connection.execute(statement,[])
+    let types = result[0]
+    let statement2 = ''
+    let result2 = ''
+    let statement3 = ''
+    let result3 = ''
+    for(let i in types){
+      statement2 = `select distinct title from recommends where type = ?;`
+      result2 = await connection.execute(statement2,[types[i].type])
+      let titles = result2[0]
+      types[i].list = titles
+      for(let j in titles){
+        statement3 = `select * from movieinfo,recommends
+         where movieinfo.movieId = recommends.movieId  and recommends.type = ? and recommends.title = ? 
+         order by createTime desc 
+         LIMIT 6 OFFSET 0;`
+        result3 = await connection.execute(statement3,[types[i].type,titles[j].title])
+        types[i].list[j].movieList  = result3[0]
+      }
+    }
+    return types
+  }
   // async submit(title, content) { // 提交用户反馈
   //   const statement = `INSERT INTO problem (title,content) values (?,?);`
   //   const result = await connection.execute(statement, [title, content])

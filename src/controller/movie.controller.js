@@ -41,6 +41,10 @@ class MovieController {
         const result = await movieService.findSearch(keywords,range,num,page)
         ctx.body = result
     }
+    async getRecommends(ctx,next) { // 推荐列表
+      const result = await movieService.findRecommends()
+      ctx.body = result
+    }
 
     // async addProblem(ctx, next) { // 提交用户反馈
     //     const { title,content } = ctx.query
