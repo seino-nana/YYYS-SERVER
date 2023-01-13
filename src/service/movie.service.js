@@ -113,7 +113,7 @@ class MovieService {
     const statement = `
     select * FROM movieinfo 
     WHERE typeDesc LIKE ? AND cat LIKE ? AND categorys LIKE ? AND area LIKE ? AND year LIKE ? 
-    ORDER BY create_time desc 
+    ORDER BY update_time desc 
     LIMIT ? OFFSET ?;` // 按条件分类查询
     const result = await connection.execute(statement, [_typeDesc,_cat,_categorys, _area, _year,limit, offset])
     const statement2 = `
