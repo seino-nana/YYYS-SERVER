@@ -5,7 +5,8 @@ const {
   gettypeDescCount,
   getCategoryMovies,
   getSearch,
-  getRecommends
+  getRecommends,
+  getBanners,
   // getCount,
   // update,
   // remove,
@@ -33,6 +34,7 @@ dataRouter.get('/typeDescCount',gettypeDescCount) // 获取typeDesc分类的个�
 dataRouter.get('/search/category',getCategoryMovies) // 按条件分类查询
 dataRouter.get('/fuzzysearch',getSearch) // 关键字查询
 dataRouter.get('/recommends',getRecommends) // 推荐列表
+dataRouter.get('/banners',getBanners) // 轮播图列表
 // // 增加点击量
 // dataRouter.get('/addPlayCount',addPlayCount)
 // // 提交用户反馈

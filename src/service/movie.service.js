@@ -185,7 +185,7 @@ class MovieService {
   async findtypeDescCount() { // 查询typeDesc分类个数
     const statement = `select count(*) as count,
                          count(typedesc='电影' or null) as dianyin,
-                         count(typedesc='电视剧' or null) as dianshiju, 
+                         count(typedesc='连续剧' or null) as lianxuju, 
                          count(typedesc='综艺' or null) as zongyi,
                          count(typedesc='动漫' or null) as dongman
                       from movieinfo;`
@@ -215,6 +215,13 @@ class MovieService {
       }
     }
     return types
+  }
+  async findBanners() { // 轮播图列表
+    const statement = `select movieinfo.movieId,banners.image,movieinfo.ut,banners.desc  
+    from movieinfo,banners
+    where movieinfo.movieId = banners.movieId ;`
+    const result = await connection.execute(statement,[])
+    return result[0]
   }
   // async submit(title, content) { // 提交用户反馈
   //   const statement = `INSERT INTO problem (title,content) values (?,?);`

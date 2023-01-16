@@ -45,6 +45,10 @@ class MovieController {
       const result = await movieService.findRecommends()
       ctx.body = result
     }
+    async getBanners(ctx,next) { // 轮播图列表
+      const result = await movieService.findBanners()
+      ctx.body = result
+    }
 
     // async addProblem(ctx, next) { // 提交用户反馈
     //     const { title,content } = ctx.query
