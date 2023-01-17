@@ -102,7 +102,8 @@ class MovieService {
     obj.movieDetail.number = result2[0]
     return obj;
   }
-  async findCategoryMovies(typeDesc,cat,categorys,area,year,num,page) { // 按条件分类查询
+  async findCategoryMovies(typeDesc,cat,categorys,area,year,sort,num,page) { // 按条件分类查询
+    
     const _typeDesc = '%' + typeDesc + '%'
     const _cat = '%' + cat + '%'
     const _categorys = '%' + categorys + '%'
@@ -110,11 +111,21 @@ class MovieService {
     const _year = '%' + year + '%'
     const offset = "" + ((page - 1) * num) 
     const limit = num
-    const statement = `
-    select * FROM movieinfo 
-    WHERE typeDesc LIKE ? AND cat LIKE ? AND categorys LIKE ? AND area LIKE ? AND year LIKE ? 
-    ORDER BY update_time desc 
-    LIMIT ? OFFSET ?;` // 按条件分类查询
+    let statement = ''
+    if(sort == 0){
+      statement = `
+      select * FROM movieinfo 
+      WHERE typeDesc LIKE ? AND cat LIKE ? AND categorys LIKE ? AND area LIKE ? AND year LIKE ? 
+      ORDER BY update_time desc 
+      LIMIT ? OFFSET ?;` // 按条件分类查询
+    } else if(sort == 1){
+      statement = `
+      select * FROM movieinfo
+      WHERE typeDesc LIKE ? AND cat LIKE ? AND categorys LIKE ? AND area LIKE ? AND year LIKE ?
+      ORDER BY play_count desc 
+      LIMIT ? OFFSET ?;`
+    }
+    
     const result = await connection.execute(statement, [_typeDesc,_cat,_categorys, _area, _year,limit, offset])
     const statement2 = `
     SELECT count(1) as count from movieinfo
@@ -219,8 +230,13 @@ class MovieService {
   async findBanners() { // 轮播图列表
     const statement = `select movieinfo.movieId,banners.image,movieinfo.ut,banners.desc  
     from movieinfo,banners
-    where movieinfo.movieId = banners.movieId ;`
+    where movieinfo.movieId = banners.movieId order by banners.createTime desc;`
     const result = await connection.execute(statement,[])
+    return result[0]
+  }
+  async addPlayCount(movieId) { // 增加点击量
+    const statement = `update movieinfo set play_count = play_count + 1 WHERE movieId = ?;`
+    const result = await connection.execute(statement, [movieId])
     return result[0]
   }
   // async submit(title, content) { // 提交用户反馈
@@ -235,11 +251,7 @@ class MovieService {
   //   const result = await connection.execute(statement, [limit, offset])
   //   return result[0]
   // }
-  // async addPlayCount(id) { // 增加点击量
-  //   const statement = `update movie2 set play_count = play_count + 1 WHERE id = ?;`
-  //   const result = await connection.execute(statement, [id])
-  //   return result[0]
-  // }
+  
   // async addVisitor(address, ads) { // 添加访问信息
   //   const statement = `INSERT INTO visitor (address,ads) values (?,?);`
   //   const result = await connection.execute(statement, [address, ads])

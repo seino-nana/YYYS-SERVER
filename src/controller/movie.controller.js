@@ -32,8 +32,8 @@ class MovieController {
     }
     async getCategoryMovies(ctx, next) { // 按条件分类查询
         // 不是必传参数
-        const { typeDesc='',cat='',categorys='',area='',year='',num,page } = ctx.query
-        const result = await movieService.findCategoryMovies(typeDesc,cat,categorys,area,year,num,page)
+        const { typeDesc='',cat='',categorys='',area='',year='',sort='',num,page } = ctx.query
+        const result = await movieService.findCategoryMovies(typeDesc,cat,categorys,area,year,sort,num,page)
         ctx.body = result
     }
     async getSearch(ctx, next) { // 模糊搜索
@@ -49,7 +49,11 @@ class MovieController {
       const result = await movieService.findBanners()
       ctx.body = result
     }
-
+    async addPlayCount(ctx, next) { // 增加点击量
+        const { movieId } = ctx.query
+        await movieService.addPlayCount(movieId)
+        ctx.body = movieId + '+1'
+    }
     // async addProblem(ctx, next) { // 提交用户反馈
     //     const { title,content } = ctx.query
     //     await movieService.submit(title,content)
@@ -61,11 +65,7 @@ class MovieController {
     //     const result = await movieService.getProblem(page,num)
     //     ctx.body = result
     // } 
-    // async addPlayCount(ctx, next) { // 增加点击量
-    //     const { id } = ctx.query
-    //     await movieService.addPlayCount(id)
-    //     ctx.body = id + '+1'
-    // }
+    
     // async addVisitor(ctx, next) { // 添加访客信息
     //   const { address,ads } = ctx.query
     //   await movieService.addVisitor(address,ads)

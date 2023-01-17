@@ -7,10 +7,11 @@ const {
   getSearch,
   getRecommends,
   getBanners,
+  addPlayCount,
   // getCount,
   // update,
   // remove,
-  // addPlayCount,
+  
   // addProblem,
   // getProblem,
   // addVisitor,
@@ -35,8 +36,8 @@ dataRouter.get('/search/category',getCategoryMovies) // 按条件分类查询
 dataRouter.get('/fuzzysearch',getSearch) // 关键字查询
 dataRouter.get('/recommends',getRecommends) // 推荐列表
 dataRouter.get('/banners',getBanners) // 轮播图列表
-// // 增加点击量
-// dataRouter.get('/addPlayCount',addPlayCount)
+dataRouter.get('/addPlayCount',addPlayCount) // 增加点击量
+
 // // 提交用户反馈
 // dataRouter.get('/addProblem',addProblem)
 // // 获取用户反馈
