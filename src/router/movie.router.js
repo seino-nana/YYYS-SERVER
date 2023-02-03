@@ -8,11 +8,11 @@ const {
   getRecommends,
   getBanners,
   addPlayCount,
+  addProblem,
   // getCount,
   // update,
   // remove,
   
-  // addProblem,
   // getProblem,
   // addVisitor,
   // getVisitor,
@@ -37,9 +37,8 @@ dataRouter.get('/fuzzysearch',getSearch) // 关键字查询
 dataRouter.get('/recommends',getRecommends) // 推荐列表
 dataRouter.get('/banners',getBanners) // 轮播图列表
 dataRouter.get('/addPlayCount',addPlayCount) // 增加点击量
+dataRouter.get('/addProblem',addProblem) // 提交用户反馈
 
-// // 提交用户反馈
-// dataRouter.get('/addProblem',addProblem)
 // // 获取用户反馈
 // dataRouter.get('/problem',getProblem)
 // // 添加访客信息

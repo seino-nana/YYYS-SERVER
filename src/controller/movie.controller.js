@@ -54,11 +54,11 @@ class MovieController {
         await movieService.addPlayCount(movieId)
         ctx.body = movieId + '+1'
     }
-    // async addProblem(ctx, next) { // 提交用户反馈
-    //     const { title,content } = ctx.query
-    //     await movieService.submit(title,content)
-    //     ctx.body = '提交成功'
-    // }
+    async addProblem(ctx, next) { // 提交用户反馈
+        const { content } = ctx.query
+        const result = await movieService.submit(content)
+        ctx.body = result
+    }
     
     // async getProblem(ctx, next) { // 获取用户反馈
     //     const { page,num } = ctx.query

@@ -94,7 +94,7 @@ class MovieService {
   async getDetail(movieId) { // 获取电影信息
     const statement = `SELECT * FROM movieinfo WHERE movieId = ?;`; // 获取电影信息
     const result = await connection.execute(statement, [movieId]);
-    const statement2 = `select * from playurl where movieId = ? ORDER BY number asc;`; // 从playurl获取集数
+    const statement2 = `select * from playurl where movieId = ?;`; // 从playurl获取集数
     const result2 = await connection.execute(statement2, [movieId]);
     const obj = {}
     obj.movieDetail = result[0][0]
@@ -116,7 +116,7 @@ class MovieService {
       statement = `
       select * FROM movieinfo 
       WHERE typeDesc LIKE ? AND cat LIKE ? AND categorys LIKE ? AND area LIKE ? AND year LIKE ? 
-      ORDER BY update_time desc 
+      ORDER BY create_time desc 
       LIMIT ? OFFSET ?;` // 按条件分类查询
     } else if(sort == 1){
       statement = `
@@ -237,13 +237,18 @@ class MovieService {
   async addPlayCount(movieId) { // 增加点击量
     const statement = `update movieinfo set play_count = play_count + 1 WHERE movieId = ?;`
     const result = await connection.execute(statement, [movieId])
-    return result[0]
+    return '增加点击量'
   }
-  // async submit(title, content) { // 提交用户反馈
-  //   const statement = `INSERT INTO problem (title,content) values (?,?);`
-  //   const result = await connection.execute(statement, [title, content])
-  //   return result[0]
-  // }
+  async submit( content) { // 提交用户反馈
+    if(content){
+      const statement = `INSERT INTO problem (content) values (?);`
+      await connection.execute(statement, [content])
+      return '提交成功'
+    }
+    else{
+      return '提交失败'
+    }
+  }
   // async getProblem(page, num) { // 获取用户反馈
   //   const offset = "" + ((page - 1) * num)
   //   const limit = num
