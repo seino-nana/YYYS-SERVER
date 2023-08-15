@@ -24,7 +24,7 @@ class MovieController {
     async getDetail(ctx, next) { // 获取信息
         const { movieId } = ctx.query
         const result = await movieService.getDetail(movieId)
-        ctx.body = result
+        ctx.body = result[0]
     }
     async gettypeDescCount(ctx, next) { // 获取typeDesc分类的个数
         const result = await movieService.findtypeDescCount()
@@ -50,7 +50,7 @@ class MovieController {
       ctx.body = result
     }
     async addPlayCount(ctx, next) { // 增加点击量
-        const { movieId } = ctx.query
+        const { movieId } = ctx.request.body
         await movieService.addPlayCount(movieId)
         ctx.body = movieId + '+1'
     }
@@ -59,7 +59,7 @@ class MovieController {
         const result = await movieService.submit(content)
         ctx.body = result
     }
-    
+   
     // async getProblem(ctx, next) { // 获取用户反馈
     //     const { page,num } = ctx.query
     //     const result = await movieService.getProblem(page,num)

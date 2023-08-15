@@ -94,13 +94,8 @@ class MovieService {
   async getDetail(movieId) { // 获取电影信息
     const statement = `SELECT * FROM movieinfo WHERE movieId = ?;`; // 获取电影信息
     const result = await connection.execute(statement, [movieId]);
-    const statement2 = `select * from playurl where movieId = ?;`; // 从playurl获取集数
-    const result2 = await connection.execute(statement2, [movieId]);
-    const obj = {}
-    obj.movieDetail = result[0][0]
-    // 集数添加到电影信息中
-    obj.movieDetail.number = result2[0]
-    return obj;
+
+    return result[0];
   }
   async findCategoryMovies(typeDesc,cat,categorys,area,year,sort,num,page) { // 按条件分类查询
     
@@ -124,6 +119,12 @@ class MovieService {
       WHERE typeDesc LIKE ? AND cat LIKE ? AND categorys LIKE ? AND area LIKE ? AND year LIKE ?
       ORDER BY play_count desc 
       LIMIT ? OFFSET ?;`
+    } else if(sort == 2){
+      statement = `
+      select * FROM movieinfo
+      WHERE typeDesc LIKE ? AND cat LIKE ? AND cat!='记录片' AND categorys LIKE ? AND area LIKE ? AND year LIKE ?
+      ORDER BY score desc 
+      LIMIT ? OFFSET ?;`  
     }
     
     const result = await connection.execute(statement, [_typeDesc,_cat,_categorys, _area, _year,limit, offset])
@@ -147,7 +148,7 @@ class MovieService {
     let statement2 = ''
     let result = ''
     let result2 = ''
-    if(range===0){ //range为0时按影名
+    if(range==0){ //range为0时按影名
       statement = `select * FROM movieinfo WHERE 
       nm LIKE ?
       ORDER BY year desc
@@ -189,7 +190,7 @@ class MovieService {
       result2 = await connection.execute(statement2,[_keywords,_keywords,_keywords])
     }
     const obj = {}
-    obj.fuzzymovie = result[0]
+    obj.movieList = result[0]
     obj.count = result2[0][0].count
     return obj
   }
@@ -249,6 +250,7 @@ class MovieService {
       return '提交失败'
     }
   }
+  
   // async getProblem(page, num) { // 获取用户反馈
   //   const offset = "" + ((page - 1) * num)
   //   const limit = num

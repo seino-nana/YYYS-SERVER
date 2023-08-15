@@ -11,12 +11,18 @@ const path = require('path')
 
 const app = new koa()
 // 返回解析
-app.use(bodyParser());
+app.use(bodyParser({
+  formLimit: '200mb',
+  jsonLimit: '200mb',
+  textLimit: '200mb',
+}));
 
 // 图片静态储存
 app.use(koaStatic(path.join(__dirname,'../../upload/banners')))
 // 视频静态储存
 app.use(koaStatic(path.join(__dirname,'../../upload/movies')))
+// 
+app.use(koaStatic(path.join(__dirname,'../../upload/avatar')))
 
 // 解决跨域
 app.use(async (ctx, next) => {

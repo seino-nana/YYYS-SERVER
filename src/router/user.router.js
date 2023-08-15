@@ -11,29 +11,26 @@ const { verifyAuth,verifyAuth1,verifyAuth2 } = require('../middleware/auth.middl
 
 const { 
         create,
-        getUserDetail,
-        getUserSubcount,
-        update,
-        remove,
-        getallUserInfo
+        getUserInfo,
+        updateUserInfo,
+        getHistory,
+        addHistory,
+        deleteHistory,
+        getCollect,
+        addCollect,
+        deleteCollect
       }  = require('../controller/user.controller')
 
-const userRouter = new Router({prefix: "/user"})
+const userRouter = new Router({prefix: "/user"}) 
 
-// 用户注册
-userRouter.post("/",verifyAuth,verifyAuth1,verifyUser,handlePassword,create)
-
-// 获取当前用户信息
-userRouter.get("/detail",verifyAuth,getUserDetail)
-
-// 获取用户信息(包含收藏/历史记录)
-userRouter.get("/subcount",verifyAuth,getUserSubcount) 
-// 更改用户信息
-userRouter.patch("/update",verifyAuth,update)
-// 删除用户
-userRouter.delete("/delete",verifyAuth,verifyAuth1,remove)
-
-// 获取所有用户信息(仅限超级管理员)
-userRouter.get('/allUserInfo',verifyAuth,verifyAuth1,getallUserInfo)
+userRouter.post("/",verifyUser,handlePassword,create) // 用户注册
+userRouter.get("/info",verifyAuth,getUserInfo) // 获取当前用户信息
+userRouter.post('/info/update',verifyAuth,updateUserInfo) // 编辑用户信息
+userRouter.get('/history',verifyAuth,getHistory) // 获取某个用户的历史记录
+userRouter.post('/history/add',verifyAuth,addHistory) // 添加历史记录
+userRouter.post('/history/delete',verifyAuth,deleteHistory) // 批量删除历史记录
+userRouter.get('/collect',verifyAuth,getCollect) //获取某个用户的收藏
+userRouter.post('/collect/add',verifyAuth,addCollect) // 添加收藏
+userRouter.post('/collect/delete',verifyAuth,deleteCollect) // 批量删除收藏
 
 module.exports = userRouter

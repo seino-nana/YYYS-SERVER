@@ -12,7 +12,6 @@ const {
   // getCount,
   // update,
   // remove,
-  
   // getProblem,
   // addVisitor,
   // getVisitor,
@@ -33,11 +32,12 @@ const dataRouter = new Router({prefix: '/movies'})
 dataRouter.get('/detail',getDetail) // 查询id的所有信息
 dataRouter.get('/typeDescCount',gettypeDescCount) // 获取typeDesc分类的个数
 dataRouter.get('/search/category',getCategoryMovies) // 按条件分类查询
-dataRouter.get('/fuzzysearch',getSearch) // 关键字查询
+dataRouter.get('/search',getSearch) // 关键字查询
 dataRouter.get('/recommends',getRecommends) // 推荐列表
 dataRouter.get('/banners',getBanners) // 轮播图列表
-dataRouter.get('/addPlayCount',addPlayCount) // 增加点击量
+dataRouter.post('/addPlayCount',addPlayCount) // 增加点击量
 dataRouter.get('/addProblem',addProblem) // 提交用户反馈
+
 
 // // 获取用户反馈
 // dataRouter.get('/problem',getProblem)
@@ -49,5 +49,4 @@ dataRouter.get('/addProblem',addProblem) // 提交用户反馈
 // dataRouter.get('/visitor/week',getvisitorWeek)
 
 module.exports = dataRouter
-
 

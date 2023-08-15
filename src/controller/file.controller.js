@@ -16,6 +16,11 @@ class FileController {
         await fileService.createMovie(filename)
         ctx.body = '保存'
     }
+
+    async getAvatarInfo(ctx,next){
+        const { filename } = ctx.req.file
+        ctx.body = 'https://www.3154movie.cn/' + filename 
+    }
 }
 
 module.exports = new FileController()
