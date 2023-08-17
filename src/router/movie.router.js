@@ -1,11 +1,11 @@
 const Router = require('koa-router')
 
 const { 
+  getRecommends,
   getDetail,
   gettypeDescCount,
   getCategoryMovies,
   getSearch,
-  getRecommends,
   getBanners,
   addPlayCount,
   addProblem,
@@ -29,11 +29,12 @@ const dataRouter = new Router({prefix: '/movies'})
 // dataRouter.post('/update',verifyAuth,verifyAuth1,update) // 编辑电影
 // dataRouter.delete('/:movieId',verifyAuth,verifyAuth1,remove) // 删除id的所有信息
 
+dataRouter.get('/recommends',getRecommends) // 获取首页推荐列表
 dataRouter.get('/detail',getDetail) // 查询id的所有信息
 dataRouter.get('/typeDescCount',gettypeDescCount) // 获取typeDesc分类的个数
 dataRouter.get('/search/category',getCategoryMovies) // 按条件分类查询
 dataRouter.get('/search',getSearch) // 关键字查询
-dataRouter.get('/recommends',getRecommends) // 推荐列表
+
 dataRouter.get('/banners',getBanners) // 轮播图列表
 dataRouter.post('/addPlayCount',addPlayCount) // 增加点击量
 dataRouter.get('/addProblem',addProblem) // 提交用户反馈
