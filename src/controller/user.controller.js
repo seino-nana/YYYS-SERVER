@@ -10,7 +10,17 @@ class UserController {
     )
     ctx.body = '用户' + username + '添加成功'
   }
-
+  async getUserInfo(ctx, next) { // 获取用户信息
+    const { userId } = ctx.user
+    const result = await userService.getUserInfo(userId)
+    ctx.body = result[0]
+  }
+  async updateUserInfo(ctx,next) { // 编辑用户信息
+    const { userId } = ctx.user
+    const { avatar='',name='',introduction='',phone='' } = ctx.request.body
+    const result = await userService.updateUserInfo(userId,avatar,name,introduction,phone)
+    ctx.body = result
+  }
   async getHistory(ctx, next) { //获取用户历史记录
     const { userId } = ctx.user
     const result = await userService.getHistory(userId)
@@ -40,20 +50,6 @@ class UserController {
   async deleteCollect(ctx,next) { // 取消收藏
     const {ids} = ctx.request.body
     ctx.body = await userService.deleteCollect(ids)
-  }
-
-  async getUserInfo(ctx, next) { // 获取用户信息
-    const { userId } = ctx.user
-    const result = await userService.getUserInfo(userId)
-    ctx.body = result[0]
-  }
-
-  // 编辑用户信息
-  async updateUserInfo(ctx,next) { // 编辑用户信息
-    const { userId } = ctx.user
-    const { avatar='',name='',introduction='',phone='' } = ctx.request.body
-    const result = await userService.updateUserInfo(userId,avatar,name,introduction,phone)
-    ctx.body = result
   }
 }
 

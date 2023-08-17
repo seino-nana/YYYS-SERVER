@@ -23,7 +23,7 @@ const verifyLogin = async (ctx, next) => {
         const error = new Error(errorType.USER_DOES_NOT_EXISTS)
         return ctx.app.emit("error", error, ctx)
     }
-    // 4.对密码进行解密,并判断密码是否和数据库的密码一致
+    // 4.对密码进行解密,并判断密码是否和数据库的密码一致 
     if (md5password(password) !== user.password) {
         const error = new Error(errorType.PASSWORD_IS_INCURRENT)
         return ctx.app.emit("error", error, ctx)
@@ -60,10 +60,10 @@ const verifyAuth = async (ctx, next) => {
 };
 
 const verifyAuth1 = async (ctx,next) => {
-    console.log('验证是否为超级管理员');
-    // 获取id
-    const { id } = ctx.user
-    const result = await userService.verifyAuth1(id)
+    console.log('验证是否为高级会员');
+    // 获取useId
+    const { userId } = ctx.user
+    const result = await userService.verifyAuth1(userId)
     // 不符合返回权限不够
     if(result[0].grade > 1) {
         const error = new Error(errorType.NOT_ROOT)
@@ -75,8 +75,8 @@ const verifyAuth1 = async (ctx,next) => {
 const verifyAuth2 = async (ctx,next) => {
     console.log('验证是否为管理员');
     // 获取id
-    const { id } = ctx.user
-    const result = await userService.verifyAuth1(id)
+    const { userId } = ctx.user
+    const result = await userService.verifyAuth1(userId)
     // 不符合返回权限不够
     if(result[0].grade > 2) {
         const error = new Error(errorType.NOT_ROOT)

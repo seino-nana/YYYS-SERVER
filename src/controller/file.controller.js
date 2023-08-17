@@ -10,12 +10,6 @@ class FileController {
 
         ctx.body = '保存'
     }
-    // 保存电影的地址信息
-    async saveMoviesInfo(ctx,next) {
-        const { filename,originalname } = ctx.req.file
-        await fileService.createMovie(filename)
-        ctx.body = '保存'
-    }
 
     async getAvatarInfo(ctx,next){
         const { filename } = ctx.req.file

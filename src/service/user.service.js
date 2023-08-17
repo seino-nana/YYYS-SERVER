@@ -10,16 +10,6 @@ class UserService {
     ])
     return result[0]
   }
-  async getUserByName(username) { // 判断一个用户是否存在于数据库
-    const statement = `SELECT * FROM user where username = ?;`
-    const result = await connection.execute(statement, [username])
-    return result[0]
-  }
-  async verifyAuth1(id) { // 判断当前用户管理级别(是否为超级管理员)
-    const statement = `SELECT * FROM user where id = ?;`
-    const result = await connection.execute(statement, [id])
-    return result[0]
-  }
   async getUserInfo(userId) { // 获取用户信息
     const statement = `SELECT * FROM userinfo WHERE userId = ?;`
     const result = await connection.execute(statement, [userId])
@@ -102,5 +92,17 @@ class UserService {
       };
     }
   }
+  async getUserByName(username) { // 判断一个用户是否存在于数据库
+    const statement = `SELECT * FROM user where username = ?;`
+    const result = await connection.execute(statement, [username])
+    return result[0]
+  }
+  async verifyAuth1(userId) { // 通过userId获取grade
+    const statement = `SELECT * FROM user where userId = ?;`
+    const result = await connection.execute(statement, [userId])
+    return result[0]
+  }
+  
+  
 }
 module.exports = new UserService()

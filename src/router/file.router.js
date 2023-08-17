@@ -13,6 +13,5 @@ const { verifyAuth,verifyAuth1,verifyAuth2 } = require('../middleware/auth.middl
 const fileRouter = new Router({ prefix: '/upload' })
 
 fileRouter.post('/banners',bannersHandler,saveBannersInfo)
-fileRouter.post('/movies',moviesHandler,saveMoviesInfo)
 fileRouter.post('/avatar',avatarHandler,getAvatarInfo)
 module.exports = fileRouter 
