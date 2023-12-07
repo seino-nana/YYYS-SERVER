@@ -14,12 +14,12 @@ const errorHandler = (error, ctx) => {
       break;
 
     case errorTypes.USER_DOES_NOT_EXISTS:
-      status = 400; // Bad Request
+      status = 401; // Bad Request
       message = "用户名不存在";
       break;
 
     case errorTypes.PASSWORD_IS_INCURRENT:
-      status = 400; // Bad Request
+      status = 401; // Bad Request
       message = "密码错误";
       break;
 
@@ -30,7 +30,7 @@ const errorHandler = (error, ctx) => {
 
     case errorTypes.NOT_ROOT:
       status = 401; // 没有权限
-      message = "权限不够";
+      message = "没有这个权限";
       break;
 
     default:

@@ -10,15 +10,35 @@ class UserService {
     ])
     return result[0]
   }
+  async deleteUser(userId) { // 删除某个用户
+    await connection.execute('DELETE FROM userinfo WHERE userId = ?', [userId]);
+    await connection.execute('DELETE FROM user WHERE userId = ?', [userId]);
+    return `成功删除用户${userId}的相关数据`
+  }
+  async getUserInfoList(grade) { // 获取用户列表
+    if (grade) {
+      if (grade === "管理员" || grade === "会员") {
+        const statement = `SELECT * FROM userinfo WHERE grade = ?;`
+        const result = await connection.execute(statement, [grade])
+        return result[0]
+      } else {
+        return '参数有误'
+      }
+    } else {
+      const statement = `SELECT * FROM userinfo;`
+      const result = await connection.execute(statement)
+      return result[0]
+    }
+  }
   async getUserInfo(userId) { // 获取用户信息
     const statement = `SELECT * FROM userinfo WHERE userId = ?;`
     const result = await connection.execute(statement, [userId])
     return result[0]
   }
-  async updateUserInfo(userId, avatar, name, introduction, phone) { // 编辑用户信息
+  async updateUserInfo(userId, avatar, name, introduction, phone,grade) { // 编辑用户信息
     try {
-      const statement = `UPDATE userinfo SET name = ?,avatar = ?,introduction = ?,phone = ? WHERE userId = ?;`
-      await connection.execute(statement, [name, avatar, introduction, phone, userId])
+      const statement = `UPDATE userinfo SET name = ?,avatar = ?,introduction = ?,phone = ?,grade = ? WHERE userId = ?;`
+      await connection.execute(statement, [name, avatar, introduction, phone, grade, userId])
       return {
         statusCode: 200, // 成功的状态码
         data: '编辑成功' // 结果数据
@@ -97,12 +117,5 @@ class UserService {
     const result = await connection.execute(statement, [username])
     return result[0]
   }
-  async verifyAuth1(userId) { // 通过userId获取grade
-    const statement = `SELECT * FROM user where userId = ?;`
-    const result = await connection.execute(statement, [userId])
-    return result[0]
-  }
-  
-  
 }
 module.exports = new UserService()

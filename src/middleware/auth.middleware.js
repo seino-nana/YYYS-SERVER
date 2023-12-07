@@ -59,35 +59,21 @@ const verifyAuth = async (ctx, next) => {
     }
 };
 
-const verifyAuth1 = async (ctx,next) => {
-    console.log('验证是否为高级会员');
-    // 获取useId
-    const { userId } = ctx.user
-    const result = await userService.verifyAuth1(userId)
-    // 不符合返回权限不够
-    if(result[0].grade > 1) {
-        const error = new Error(errorType.NOT_ROOT)
-        return ctx.app.emit("error", error, ctx)
-    } 
-    await next();
-}
-
-const verifyAuth2 = async (ctx,next) => {
-    console.log('验证是否为管理员');
-    // 获取id
-    const { userId } = ctx.user
-    const result = await userService.verifyAuth1(userId)
-    // 不符合返回权限不够
-    if(result[0].grade > 2) {
-        const error = new Error(errorType.NOT_ROOT)
-        return ctx.app.emit("error", error, ctx)
-    } 
-    await next();
+const checkUserPermission = async (ctx,next) => {
+  console.log('验证是否为本人或者超级管理员');
+  const {userId} = ctx.user
+  const result = await userService.getUserInfo(userId)
+  if(result[0].grade == '超级管理员' || userId == ctx.params.userId) {
+    console.log('权限正确');
+  } else {
+    const error = new Error(errorType.NOT_ROOT)
+    return ctx.app.emit("error", error, ctx)
+  }
+  await next();
 }
 
 module.exports = {
     verifyLogin,
     verifyAuth,
-    verifyAuth1,
-    verifyAuth2
+    checkUserPermission
 }

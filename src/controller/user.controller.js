@@ -10,15 +10,25 @@ class UserController {
     )
     ctx.body = '用户' + username + '添加成功'
   }
+  async deleteUser(ctx,next) { // 删除用户
+    const { userId } = ctx.params;
+    const result = await userService.deleteUser(userId)
+    ctx.body = result
+  }
+  async getUserInfoList(ctx,next) { // 获取用户列表
+    const {grade} = ctx.request.body
+    const result = await userService.getUserInfoList(grade)
+    ctx.body = result
+  }
   async getUserInfo(ctx, next) { // 获取用户信息
-    const { userId } = ctx.user
+    const { userId } = ctx.params
     const result = await userService.getUserInfo(userId)
     ctx.body = result[0]
   }
   async updateUserInfo(ctx,next) { // 编辑用户信息
     const { userId } = ctx.user
-    const { avatar='',name='',introduction='',phone='' } = ctx.request.body
-    const result = await userService.updateUserInfo(userId,avatar,name,introduction,phone)
+    const { avatar='',name='',introduction='',phone='',grade } = ctx.request.body
+    const result = await userService.updateUserInfo(userId,avatar,name,introduction,phone,grade)
     ctx.body = result
   }
   async getHistory(ctx, next) { //获取用户历史记录
